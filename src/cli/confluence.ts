@@ -4,6 +4,8 @@ import AtlassianProduct from '../product/atlassian-product';
 
 const Confluence = new AtlassianProduct({
     name: 'confluence',
+    groupId: 'com.atlassian.confluence',
+    webappName: 'confluence-webapp',
     httpPort: 1990,
     contextPath: '/confluence',
     debugPort: 5005,

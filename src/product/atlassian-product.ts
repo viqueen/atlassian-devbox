@@ -1,10 +1,13 @@
 import { Command } from 'commander';
 import path from 'path';
 import os from 'os';
-import { exec, execSync, spawn } from 'child_process';
+import { execSync, spawn } from 'child_process';
+import * as fs from 'fs';
 
 interface AtlassianProductDefinition {
     name: string;
+    groupId: string;
+    webappName: string;
     httpPort: number;
     contextPath: string;
     debugPort: number;
@@ -42,10 +45,41 @@ export default class AtlassianProduct {
             );
     }
 
-    static _execute(cmd: string, params: Array<string>) {
+    static _atlassianProductsHome(): string {
         const directory = path.resolve(os.homedir(), '.atlassian-products');
         execSync(`mkdir -p ${directory}`);
+        return directory;
+    }
+
+    static _execute(cmd: string, params: Array<string>) {
+        const directory = this._atlassianProductsHome();
         spawn(cmd, params, { cwd: directory, stdio: 'inherit' });
+    }
+
+    static _extractFileWithPredicate(
+        parentDirectory: string,
+        recursive: boolean,
+        predicate: (file: string) => boolean,
+        transform: (file: string) => string
+    ) {
+        fs.readdir(parentDirectory, (error, files) => {
+            if (files) {
+                files.forEach((file) => {
+                    if (predicate(file)) {
+                        console.log(transform(file));
+                    }
+                    const nested = path.resolve(parentDirectory, file);
+                    if (fs.lstatSync(nested).isDirectory() && recursive) {
+                        this._extractFileWithPredicate(
+                            nested,
+                            recursive,
+                            predicate,
+                            transform
+                        );
+                    }
+                });
+            }
+        });
     }
 
     _withJvmArgs(version: string, jvmArgs: string): Array<string> {
@@ -93,6 +127,52 @@ export default class AtlassianProduct {
             .action((version) => {
                 const params = this._debugCmdMvnParams(version);
                 AtlassianProduct._execute('mvn', params);
+            });
+
+        this.program
+            .command('instances')
+            .description(`lists installed ${this.product.name} instances`)
+            .action(() => {
+                const directory = AtlassianProduct._atlassianProductsHome();
+                AtlassianProduct._extractFileWithPredicate(
+                    directory,
+                    false,
+                    (file) =>
+                        fs
+                            .lstatSync(path.resolve(directory, file))
+                            .isDirectory(),
+                    (file) => file
+                );
+            });
+
+        this.program
+            .command('versions')
+            .description(`lists available versions in local maven repo`)
+            .action(() => {
+                const productGroupId = this.product.groupId;
+                const productWebappName = this.product.webappName;
+
+                const targetDirectory = productGroupId.split('.').join('/');
+                const mavenRepoDirectory = path.resolve(
+                    os.homedir(),
+                    '.m2',
+                    'repository',
+                    targetDirectory
+                );
+
+                AtlassianProduct._extractFileWithPredicate(
+                    mavenRepoDirectory,
+                    true,
+                    (file) =>
+                        file.startsWith(productWebappName) &&
+                        file.endsWith('.war'),
+                    (file) => {
+                        const match = file.match(
+                            `${productWebappName}-(.*).war`
+                        );
+                        return match ? match[1] : file;
+                    }
+                );
             });
 
         return this.program;
