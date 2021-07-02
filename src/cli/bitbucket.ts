@@ -6,6 +6,7 @@ const Bitbucket = new AtlassianProduct({
     name: 'bitbucket',
     groupId: 'com.atlassian.bitbucket',
     webappName: 'bitbucket-webapp',
+    plugins: [],
     httpPort: 7990,
     contextPath: '/bitbucket',
     debugPort: 5005,

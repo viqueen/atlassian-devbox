@@ -2,6 +2,9 @@
   "name": "atlassian-devbox",
   "version": "1.0.0",
   "description": "atlassian devbox",
+  "bin": {
+    "conf": "dist/cli/confluence.js"
+  },
   "scripts": {
     "build:dev": "tsc --watch",
     "build:prod": "rimraf ./dist && tsc",

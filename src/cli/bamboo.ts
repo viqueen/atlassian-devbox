@@ -6,6 +6,7 @@ const Bamboo = new AtlassianProduct({
     name: 'bamboo',
     groupId: 'com.atlassian.bamboo',
     webappName: 'atlassian-bamboo-web-app',
+    plugins: [],
     httpPort: 6990,
     contextPath: '/bamboo',
     debugPort: 5005,

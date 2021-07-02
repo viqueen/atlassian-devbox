@@ -6,6 +6,7 @@ const Crowd = new AtlassianProduct({
     name: 'crowd',
     groupId: 'com.atlassian.crowd',
     webappName: 'crowd-web-app',
+    plugins: [],
     httpPort: 4990,
     contextPath: '/crowd',
     debugPort: 5005,

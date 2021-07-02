@@ -1,13 +1,18 @@
 import { Command } from 'commander';
 import path from 'path';
 import os from 'os';
-import { execSync, spawn } from 'child_process';
 import * as fs from 'fs';
+import {
+    _atlassianDevboxHome,
+    _execute,
+    _extractFileWithPredicate
+} from './util';
 
 interface AtlassianProductDefinition {
     name: string;
     groupId: string;
     webappName: string;
+    plugins: Array<string>;
     httpPort: number;
     contextPath: string;
     debugPort: number;
@@ -42,55 +47,19 @@ export default class AtlassianProduct {
                 '-ap, --ajp-port <ajpPort>',
                 'with ajp port',
                 `${this.product.ajpPort}`
+            )
+            .option(
+                '--plugins <plugins>',
+                'with plugins',
+                `${this.product.plugins.join(',')}`
             );
     }
 
-    static _atlassianDevboxHome(): string {
-        const directory = path.resolve(os.homedir(), '.atlassian-devbox');
-        execSync(`mkdir -p ${directory}`);
-        return directory;
-    }
-
-    static _execute(cmd: string, params: Array<string>) {
-        const directory = this._atlassianDevboxHome();
-        spawn(cmd, params, { cwd: directory, stdio: 'inherit' });
-    }
-
-    static _extractFileWithPredicate(
-        parentDirectory: string,
-        recursive: boolean,
-        predicate: (file: string) => boolean,
-        transform: (file: string) => string
-    ) {
-        fs.readdir(parentDirectory, (error, files) => {
-            if (files) {
-                files.forEach((file) => {
-                    if (predicate(file)) {
-                        console.log(transform(file));
-                    }
-                    const nested = path.resolve(parentDirectory, file);
-                    if (fs.lstatSync(nested).isDirectory() && recursive) {
-                        this._extractFileWithPredicate(
-                            nested,
-                            recursive,
-                            predicate,
-                            transform
-                        );
-                    }
-                });
-            }
-        });
-    }
-
-    _withJvmArgs(version: string, jvmArgs: string): Array<string> {
+    _runStandaloneArgs(version: string, jvmArgs: string): Array<string> {
         // TODO : extract amps version
-        // TODO : extract server option
-        return [
+        const params = [
             `-s`,
-            path.resolve(
-                AtlassianProduct._atlassianDevboxHome(),
-                `atlassian-settings.xml`
-            ),
+            path.resolve(_atlassianDevboxHome(), `atlassian-settings.xml`),
             `com.atlassian.maven.plugins:amps-maven-plugin:8.2.0:run-standalone`,
             `-Djvmargs='${jvmArgs}'`,
             `-Dproduct=${this.product.name}`,
@@ -100,14 +69,19 @@ export default class AtlassianProduct {
             `-Dcontext.path=${this.program.opts().contextPath}`,
             `-Dajp.port=${this.program.opts().ajpPort}`
         ];
+        const plugins = this.program.opts().plugins;
+        if (plugins.length > 0) {
+            params.push(`-Dplugins=${plugins}`);
+        }
+        return params;
     }
 
     _startCmdMvnParams(version: string): Array<string> {
-        return this._withJvmArgs(version, '-Xmx2048m');
+        return this._runStandaloneArgs(version, '-Xmx2048m');
     }
 
     _debugCmdMvnParams(version: string): Array<string> {
-        return this._withJvmArgs(
+        return this._runStandaloneArgs(
             version,
             `-Xmx2048m -Xdebug -Xrunjdwp:transport=dt_socket,address=${
                 this.program.opts().debugPort
@@ -121,7 +95,7 @@ export default class AtlassianProduct {
             .description(`runs ${this.product.name}`)
             .action((version) => {
                 const params = this._startCmdMvnParams(version);
-                AtlassianProduct._execute('mvn', params);
+                _execute('mvn', params);
             });
 
         this.program
@@ -129,7 +103,7 @@ export default class AtlassianProduct {
             .description(`runs ${this.product.name} with debug port open`)
             .action((version) => {
                 const params = this._debugCmdMvnParams(version);
-                AtlassianProduct._execute('mvn', params);
+                _execute('mvn', params);
             });
 
         this.program
@@ -153,8 +127,8 @@ export default class AtlassianProduct {
             .command('instances')
             .description(`lists installed ${this.product.name} instances`)
             .action(() => {
-                const directory = AtlassianProduct._atlassianDevboxHome();
-                AtlassianProduct._extractFileWithPredicate(
+                const directory = _atlassianDevboxHome();
+                _extractFileWithPredicate(
                     directory,
                     false,
                     (file) =>
@@ -180,7 +154,7 @@ export default class AtlassianProduct {
                     targetDirectory
                 );
 
-                AtlassianProduct._extractFileWithPredicate(
+                _extractFileWithPredicate(
                     mavenRepoDirectory,
                     true,
                     (file) =>

@@ -6,6 +6,7 @@ const Jira = new AtlassianProduct({
     name: 'jira',
     groupId: 'com.atlassian.jira',
     webappName: 'atlassian-jira-webapp',
+    plugins: [],
     httpPort: 2990,
     contextPath: '/jira',
     debugPort: 5005,
