@@ -18,13 +18,13 @@ export const _extractFileWithPredicate = (
     parentDirectory: string,
     recursive: boolean,
     predicate: (file: string) => boolean,
-    transform: (file: string) => string
+    handler: (file: string) => void
 ) => {
     fs.readdir(parentDirectory, (error, files) => {
         if (files) {
             files.forEach((file) => {
                 if (predicate(file)) {
-                    console.log(transform(file));
+                    handler(file);
                 }
                 const nested = path.resolve(parentDirectory, file);
                 if (fs.lstatSync(nested).isDirectory() && recursive) {
@@ -32,7 +32,7 @@ export const _extractFileWithPredicate = (
                         nested,
                         recursive,
                         predicate,
-                        transform
+                        handler
                     );
                 }
             });

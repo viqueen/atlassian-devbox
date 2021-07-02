@@ -124,7 +124,7 @@ export default class AtlassianProduct {
             });
 
         this.program
-            .command('instances')
+            .command('list')
             .description(`lists installed ${this.product.name} instances`)
             .action(() => {
                 const directory = _atlassianDevboxHome();
@@ -132,10 +132,33 @@ export default class AtlassianProduct {
                     directory,
                     false,
                     (file) =>
+                        file.includes(this.product.name) &&
                         fs
                             .lstatSync(path.resolve(directory, file))
                             .isDirectory(),
-                    (file) => file
+                    (file) => console.log(file)
+                );
+            });
+
+        this.program
+            .command('remove <pattern>')
+            .description(
+                `removes ${this.product.name} instance with version matching given pattern`
+            )
+            .action((pattern) => {
+                const directory = _atlassianDevboxHome();
+                _extractFileWithPredicate(
+                    directory,
+                    false,
+                    (file) =>
+                        file.startsWith(
+                            `amps-standalone-${this.product.name}-${pattern}`
+                        ),
+                    (file) => {
+                        const target = path.resolve(directory, file);
+                        console.log(`removing ${target}`);
+                        fs.rmSync(target);
+                    }
                 );
             });
 
@@ -164,7 +187,8 @@ export default class AtlassianProduct {
                         const match = file.match(
                             `${productWebappName}-(.*).war`
                         );
-                        return match ? match[1] : file;
+                        const output = match ? match[1] : file;
+                        console.log(output);
                     }
                 );
             });
