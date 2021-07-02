@@ -87,7 +87,10 @@ export default class AtlassianProduct {
         // TODO : extract server option
         return [
             `-s`,
-            path.resolve(AtlassianProduct._atlassianDevboxHome(), `atlassian-settings.xml`),
+            path.resolve(
+                AtlassianProduct._atlassianDevboxHome(),
+                `atlassian-settings.xml`
+            ),
             `com.atlassian.maven.plugins:amps-maven-plugin:8.2.0:run-standalone`,
             `-Djvmargs='${jvmArgs}'`,
             `-Dproduct=${this.product.name}`,
@@ -135,16 +138,16 @@ export default class AtlassianProduct {
             .action((name, version) => {
                 if (name === 'start') {
                     const params = this._startCmdMvnParams(version);
-                    const cmd = [ 'mvn', params.join(' ')];
+                    const cmd = ['mvn', params.join(' ')];
                     console.log(cmd.join(' '));
                 } else if (name === 'debug') {
                     const params = this._debugCmdMvnParams(version);
-                    const cmd = [ 'mvn', params.join(' ')];
+                    const cmd = ['mvn', params.join(' ')];
                     console.log(cmd.join(' '));
                 } else {
                     console.log('unknown command : [ start, debug ] allowed');
                 }
-            })
+            });
 
         this.program
             .command('instances')
