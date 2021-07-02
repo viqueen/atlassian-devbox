@@ -1,0 +1,32 @@
+{
+  "name": "atlassian-devbox",
+  "version": "1.0.0",
+  "description": "atlassian devbox",
+  "scripts": {
+    "format:check": "prettier --check src",
+    "format": "prettier --check --write src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/viqueen/atlassian-devbox.git"
+  },
+  "keywords": [
+    "atlassian",
+    "devbox"
+  ],
+  "author": "Hasnae R.",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/viqueen/atlassian-devbox/issues"
+  },
+  "homepage": "https://github.com/viqueen/atlassian-devbox#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run format:check"
+    }
+  },
+  "devDependencies": {
+    "husky": "^7.0.0",
+    "prettier": "^2.3.2"
+  }
+}
