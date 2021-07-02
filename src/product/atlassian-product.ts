@@ -49,11 +49,7 @@ export default class AtlassianProduct {
                 'with ajp port',
                 `${this.product.ajpPort}`
             )
-            .option(
-                '--plugins <plugins>',
-                'with plugins',
-                `${this.product.plugins.join(',')}`
-            );
+            .option('--plugins <plugins>', 'with plugins');
     }
 
     _runStandaloneArgs(version: string, jvmArgs: string): Array<string> {
@@ -70,10 +66,17 @@ export default class AtlassianProduct {
             `-Dcontext.path=${this.program.opts().contextPath}`,
             `-Dajp.port=${this.program.opts().ajpPort}`
         ];
-        const plugins = this.program.opts().plugins;
-        if (plugins.length > 0) {
-            params.push(`-Dplugins=${plugins}`);
+
+        // plugins
+        const plugins = [...this.product.plugins];
+        const additionalPlugins = this.program.opts().plugins;
+        if (additionalPlugins) {
+            plugins.push(additionalPlugins);
         }
+        if (plugins.length > 0) {
+            params.push(`-Dplugins=${plugins.join(',')}`);
+        }
+
         return params;
     }
 
