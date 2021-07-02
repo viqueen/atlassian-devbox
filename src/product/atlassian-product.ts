@@ -163,6 +163,19 @@ export default class AtlassianProduct {
             });
 
         this.program
+            .command(`logs <version>`)
+            .description(`tails ${this.product.name} logs`)
+            .action((version) => {
+                const logFile = path.resolve(
+                    _atlassianDevboxHome(),
+                    `amps-standalone-${this.product.name}-${version}`,
+                    'target',
+                    `${this.product.name}-LATEST.log`
+                );
+                _execute('tail', ['-f', logFile]);
+            });
+
+        this.program
             .command('versions')
             .description(`lists available versions in local maven repo`)
             .action(() => {
