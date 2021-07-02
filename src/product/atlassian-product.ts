@@ -45,14 +45,14 @@ export default class AtlassianProduct {
             );
     }
 
-    static _atlassianProductsHome(): string {
-        const directory = path.resolve(os.homedir(), '.atlassian-products');
+    static _atlassianDevboxHome(): string {
+        const directory = path.resolve(os.homedir(), '.atlassian-devbox');
         execSync(`mkdir -p ${directory}`);
         return directory;
     }
 
     static _execute(cmd: string, params: Array<string>) {
-        const directory = this._atlassianProductsHome();
+        const directory = this._atlassianDevboxHome();
         spawn(cmd, params, { cwd: directory, stdio: 'inherit' });
     }
 
@@ -87,7 +87,7 @@ export default class AtlassianProduct {
         // TODO : extract server option
         return [
             `-s`,
-            `atlassian-settings.xml`,
+            path.resolve(AtlassianProduct._atlassianDevboxHome(), `atlassian-settings.xml`),
             `com.atlassian.maven.plugins:amps-maven-plugin:8.2.0:run-standalone`,
             `-Djvmargs='${jvmArgs}'`,
             `-Dproduct=${this.product.name}`,
@@ -130,10 +130,27 @@ export default class AtlassianProduct {
             });
 
         this.program
+            .command('cmd <name> <version>')
+            .description(`prints the resolved command`)
+            .action((name, version) => {
+                if (name === 'start') {
+                    const params = this._startCmdMvnParams(version);
+                    const cmd = [ 'mvn', params.join(' ')];
+                    console.log(cmd.join(' '));
+                } else if (name === 'debug') {
+                    const params = this._debugCmdMvnParams(version);
+                    const cmd = [ 'mvn', params.join(' ')];
+                    console.log(cmd.join(' '));
+                } else {
+                    console.log('unknown command : [ start, debug ] allowed');
+                }
+            })
+
+        this.program
             .command('instances')
             .description(`lists installed ${this.product.name} instances`)
             .action(() => {
-                const directory = AtlassianProduct._atlassianProductsHome();
+                const directory = AtlassianProduct._atlassianDevboxHome();
                 AtlassianProduct._extractFileWithPredicate(
                     directory,
                     false,
