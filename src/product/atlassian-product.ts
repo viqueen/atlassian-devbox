@@ -5,7 +5,8 @@ import * as fs from 'fs';
 import {
     _atlassianDevboxHome,
     _execute,
-    _extractFileWithPredicate
+    _extractFileWithPredicate,
+    _removeDirectory
 } from './util';
 
 interface AtlassianProductDefinition {
@@ -131,12 +132,12 @@ export default class AtlassianProduct {
                 _extractFileWithPredicate(
                     directory,
                     false,
-                    (file) =>
-                        file.includes(this.product.name) &&
+                    (parent, filename) =>
+                        filename.includes(this.product.name) &&
                         fs
-                            .lstatSync(path.resolve(directory, file))
+                            .lstatSync(path.resolve(parent, filename))
                             .isDirectory(),
-                    (file) => console.log(file)
+                    (parent, filename) => console.log(filename)
                 );
             });
 
@@ -150,15 +151,11 @@ export default class AtlassianProduct {
                 _extractFileWithPredicate(
                     directory,
                     false,
-                    (file) =>
-                        file.startsWith(
+                    (parent, filename) =>
+                        filename.startsWith(
                             `amps-standalone-${this.product.name}-${pattern}`
                         ),
-                    (file) => {
-                        const target = path.resolve(directory, file);
-                        console.log(`removing ${target}`);
-                        fs.rmSync(target);
-                    }
+                    _removeDirectory
                 );
             });
 
@@ -177,7 +174,9 @@ export default class AtlassianProduct {
 
         this.program
             .command('versions')
-            .description(`lists available versions in local maven repo`)
+            .description(
+                `lists available ${this.product.name} versions in local maven repo`
+            )
             .action(() => {
                 const productGroupId = this.product.groupId;
                 const productWebappName = this.product.webappName;
@@ -193,17 +192,59 @@ export default class AtlassianProduct {
                 _extractFileWithPredicate(
                     mavenRepoDirectory,
                     true,
-                    (file) =>
-                        file.startsWith(productWebappName) &&
-                        file.endsWith('.war'),
-                    (file) => {
-                        const match = file.match(
+                    (parent, filename) =>
+                        filename.startsWith(productWebappName) &&
+                        filename.endsWith('.war'),
+                    (parent, filename) => {
+                        const match = filename.match(
                             `${productWebappName}-(.*).war`
                         );
-                        const output = match ? match[1] : file;
+                        const output = match ? match[1] : filename;
                         console.log(output);
                     }
                 );
+            });
+
+        this.program
+            .command(`purge <type>`)
+            .description(
+                `purges available ${this.product.name} versions in local maven repo`
+            )
+            .action((type) => {
+                const productGroupId = this.product.groupId;
+                const productWebappName = this.product.webappName;
+                const targetDirectory = productGroupId.split('.').join('/');
+                const mavenRepoDirectory = path.resolve(
+                    os.homedir(),
+                    '.m2',
+                    'repository',
+                    targetDirectory
+                );
+
+                if (type === 'internal') {
+                    _extractFileWithPredicate(
+                        mavenRepoDirectory,
+                        true,
+                        (parent, filename) =>
+                            filename.match(
+                                `^${productWebappName}-(.*-.*).war$`
+                            ) !== null,
+                        _removeDirectory
+                    );
+                } else if (type === 'all') {
+                    _extractFileWithPredicate(
+                        mavenRepoDirectory,
+                        true,
+                        (parent, filename) =>
+                            filename.startsWith(productWebappName) &&
+                            filename.endsWith('.war'),
+                        _removeDirectory
+                    );
+                } else {
+                    console.log(
+                        'unsupported type : [ internal , all ] allowed'
+                    );
+                }
             });
 
         return this.program;

@@ -17,17 +17,21 @@ export const _execute = (cmd: string, params: Array<string>) => {
 export const _extractFileWithPredicate = (
     parentDirectory: string,
     recursive: boolean,
-    predicate: (file: string) => boolean,
-    handler: (file: string) => void
+    predicate: (parent: string, file: string) => boolean,
+    handler: (parent: string, filename: string) => void
 ) => {
     fs.readdir(parentDirectory, (error, files) => {
         if (files) {
-            files.forEach((file) => {
-                if (predicate(file)) {
-                    handler(file);
+            files.forEach((filename) => {
+                if (predicate(parentDirectory, filename)) {
+                    handler(parentDirectory, filename);
                 }
-                const nested = path.resolve(parentDirectory, file);
-                if (fs.lstatSync(nested).isDirectory() && recursive) {
+                const nested = path.resolve(parentDirectory, filename);
+                if (
+                    fs.existsSync(nested) &&
+                    fs.lstatSync(nested).isDirectory() &&
+                    recursive
+                ) {
                     _extractFileWithPredicate(
                         nested,
                         recursive,
@@ -38,4 +42,10 @@ export const _extractFileWithPredicate = (
             });
         }
     });
+};
+
+export const _removeDirectory = (parent: string, filename: string) => {
+    const target = path.resolve(parent, filename);
+    console.log(`removing ${target}`);
+    fs.rmSync(target, { recursive: true });
 };
