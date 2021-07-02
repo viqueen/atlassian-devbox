@@ -41,13 +41,62 @@ Options:
   -dp, --debug-port <debugPort>      with debug port (default: "5005")
   -cp, --context-path <contextPath>  with context path (default: "/confluence")
   -ap, --ajp-port <ajpPort>          with ajp port (default: "8009")
+  --plugins <plugins>                with plugins
+  --jvm-args <jvmArgs>               with jvmargs
   -V, --version                      output the version number
   -h, --help                         display help for command
 
 Commands:
   start <version>                    runs confluence
   debug <version>                    runs confluence with debug port open
-  instances                          lists installed confluence instances
-  versions                           lists available versions in local maven repo
+  cmd <name> <version>               prints the resolved command
+  list                               lists installed confluence instances
+  remove <pattern>                   removes confluence instance with version matching given pattern
+  logs <version>                     tails confluence logs
+  versions                           lists available confluence versions in local maven repo
+  purge <type>                       purges available confluence versions in local maven repo
   help [command]                     display help for command
+```
+
+* start a confluence instance
+```bash
+confluence start 7.4.9
+```
+
+* tail the logs
+```bash
+confluence logs 7.4.9
+```
+
+* debug a confluence instance
+```bash
+confluence debug 7.4.9
+```
+
+* print the underlying command
+```bash
+confluence cmd start 7.4.9
+confluence cmd debug 7.4.9
+```
+
+* list installed versions
+```bash
+confluence list
+```
+
+* remove some installed version
+```bash
+confluence remove 7.4.9
+confluence remove 7.4 # removes all 7.4.x instances
+```
+
+* list available versions in local cache
+```bash
+confluence versions
+```
+
+* purge versions in local cache
+```bash
+confluence purge internal # remove any snapshots / milestones / beta / release candidates
+confluence purge all      # purges the whole thing
 ```

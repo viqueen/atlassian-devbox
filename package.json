@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "atlassian devbox",
   "bin": {
-    "conf": "dist/cli/confluence.js"
+    "bamboo": "dist/cli/bamboo.js",
+    "bitbucket": "dist/cli/bitbucket.js",
+    "confluence": "dist/cli/confluence.js",
+    "crowd": "dist/cli/crowd.js",
+    "jira": "dist/cli/jira.js"
   },
   "scripts": {
     "build:dev": "tsc --watch",
