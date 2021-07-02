@@ -10,7 +10,10 @@ const Confluence = new AtlassianProduct({
     httpPort: 1990,
     contextPath: '/confluence',
     debugPort: 5005,
-    ajpPort: 8009
+    ajpPort: 8009,
+    jvmArgs: [
+        '-Datlassian.plugins.startup.options=disable-addons=com.atlassian.migration.agent'
+    ]
 });
 
 const program = Confluence.get();

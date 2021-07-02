@@ -10,7 +10,11 @@ const Jira = new AtlassianProduct({
     httpPort: 2990,
     contextPath: '/jira',
     debugPort: 5005,
-    ajpPort: 9009
+    ajpPort: 9009,
+    jvmArgs: [
+        '-Datlassian.mail.senddisabled=false',
+        '-Djira.websudo.is.disabled=true'
+    ]
 });
 
 const program = Jira.get();

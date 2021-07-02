@@ -18,6 +18,7 @@ interface AtlassianProductDefinition {
     contextPath: string;
     debugPort: number;
     ajpPort: number;
+    jvmArgs: Array<string>;
 }
 
 export default class AtlassianProduct {
@@ -49,16 +50,16 @@ export default class AtlassianProduct {
                 'with ajp port',
                 `${this.product.ajpPort}`
             )
-            .option('--plugins <plugins>', 'with plugins');
+            .option('--plugins <plugins>', 'with plugins')
+            .option('--jvm-args <jvmArgs>', 'with jvmargs');
     }
 
-    _runStandaloneArgs(version: string, jvmArgs: string): Array<string> {
+    _runStandaloneArgs(version: string, basicJvmArgs: string): Array<string> {
         // TODO : extract amps version
         const params = [
             `-s`,
             path.resolve(_atlassianDevboxHome(), `atlassian-settings.xml`),
             `com.atlassian.maven.plugins:amps-maven-plugin:8.2.0:run-standalone`,
-            `-Djvmargs='${jvmArgs}'`,
             `-Dproduct=${this.product.name}`,
             `-Dproduct.version=${version}`,
             `-Dserver=localhost`,
@@ -77,6 +78,17 @@ export default class AtlassianProduct {
             params.push(`-Dplugins=${plugins.join(',')}`);
         }
 
+        // jvmargs
+        const jvmArgs = [...this.product.jvmArgs];
+        jvmArgs.push(basicJvmArgs);
+        const additionalJvmArgs = this.program.opts().jvmArgs;
+        if (additionalJvmArgs) {
+            jvmArgs.push(additionalJvmArgs);
+        }
+        if (jvmArgs.length > 0) {
+            params.push(`-Djvmargs='${jvmArgs.join(' ')}'`);
+        }
+
         return params;
     }
 
@@ -89,7 +101,7 @@ export default class AtlassianProduct {
             version,
             `-Xmx2048m -Xdebug -Xrunjdwp:transport=dt_socket,address=${
                 this.program.opts().debugPort
-            },server=y,suspend=n`
+            },server=y,suspend=n -Datlassian.dev.mode=true`
         );
     }
 

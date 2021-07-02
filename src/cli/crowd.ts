@@ -10,7 +10,8 @@ const Crowd = new AtlassianProduct({
     httpPort: 4990,
     contextPath: '/crowd',
     debugPort: 5005,
-    ajpPort: 4009
+    ajpPort: 4009,
+    jvmArgs: []
 });
 
 const program = Crowd.get();

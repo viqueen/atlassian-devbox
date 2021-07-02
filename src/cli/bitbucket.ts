@@ -10,7 +10,8 @@ const Bitbucket = new AtlassianProduct({
     httpPort: 7990,
     contextPath: '/bitbucket',
     debugPort: 5005,
-    ajpPort: 7009
+    ajpPort: 7009,
+    jvmArgs: []
 });
 
 const program = Bitbucket.get();
