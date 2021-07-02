@@ -7,7 +7,8 @@
     "build:prod": "rimraf ./dist && tsc",
     "format:check": "prettier --check src",
     "format": "prettier --check --write src",
-    "postinstall": "./post-install.sh"
+    "postinstall": "./post-install.sh",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -23,11 +24,6 @@
     "url": "https://github.com/viqueen/atlassian-devbox/issues"
   },
   "homepage": "https://github.com/viqueen/atlassian-devbox#readme",
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run format:check"
-    }
-  },
   "devDependencies": {
     "@types/node": "^15.14.0",
     "husky": "^7.0.0",
