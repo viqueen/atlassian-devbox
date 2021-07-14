@@ -2,6 +2,7 @@
   "name": "atlassian-devbox",
   "version": "1.0.0",
   "description": "atlassian devbox",
+  "preferGlobal": true,
   "bin": {
     "bamboo": "dist/cli/bamboo.js",
     "bitbucket": "dist/cli/bitbucket.js",
@@ -10,13 +11,18 @@
     "jira": "dist/cli/jira.js"
   },
   "scripts": {
-    "build:dev": "tsc --watch",
-    "build:prod": "rimraf ./dist && tsc",
+    "build": "tsc --watch",
+    "ci:build": "rimraf ./dist && tsc",
     "format:check": "prettier --check src",
     "format": "prettier --check --write src",
-    "postinstall": "./post-install.sh",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "node post-install.js"
   },
+  "files": [
+    "dist",
+    ".atlassian-devbox",
+    "post-install.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/viqueen/atlassian-devbox.git"
@@ -39,6 +45,7 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "commander": "^8.0.0"
+    "commander": "^8.0.0",
+    "fs-extra": "^10.0.0"
   }
 }

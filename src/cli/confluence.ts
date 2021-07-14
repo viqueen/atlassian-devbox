@@ -13,7 +13,6 @@ const Confluence = new AtlassianProduct({
     ajpPort: 8009,
     jvmArgs: [
         '-Datlassian.plugins.startup.options=disable-addons=com.atlassian.migration.agent'
-        // TODO : list available sysprops like synchrony.port
     ]
 });
 

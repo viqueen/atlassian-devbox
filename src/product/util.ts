@@ -1,11 +1,11 @@
 import path from 'path';
 import os from 'os';
-import { execSync, spawn } from 'child_process';
+import { spawn } from 'child_process';
 import fs from 'fs';
 
 export const _atlassianDevboxHome = (): string => {
     const directory = path.resolve(os.homedir(), '.atlassian-devbox');
-    execSync(`mkdir -p ${directory}`);
+    fs.mkdirSync(directory, { recursive: true });
     return directory;
 };
 

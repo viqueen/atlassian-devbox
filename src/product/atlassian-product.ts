@@ -58,7 +58,7 @@ export default class AtlassianProduct {
         // TODO : extract amps version
         const params = [
             `-s`,
-            path.resolve(_atlassianDevboxHome(), `atlassian-settings.xml`),
+            path.resolve(_atlassianDevboxHome(), `settings.xml`),
             `com.atlassian.maven.plugins:amps-maven-plugin:8.2.0:run-standalone`,
             `-Dproduct=${this.product.name}`,
             `-Dproduct.version=${version}`,

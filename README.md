@@ -8,6 +8,10 @@
 
 ## install it
 
+```bash
+npm install -g atlassian-devbox
+```
+
 ### from source
 
 ```bash
