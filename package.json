@@ -1,6 +1,6 @@
 {
   "name": "atlassian-devbox",
-  "version": "1.0.0-m01",
+  "version": "1.0.0-m02",
   "description": "atlassian devbox",
   "preferGlobal": true,
   "bin": {

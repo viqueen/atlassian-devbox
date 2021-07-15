@@ -47,6 +47,7 @@ Options:
   -ap, --ajp-port <ajpPort>          with ajp port (default: "8009")
   --plugins <plugins>                with plugins
   --jvm-args <jvmArgs>               with jvmargs
+  --amps-version <ampsVersion>       with amps version (default: "8.2.0")
   -V, --version                      output the version number
   -h, --help                         display help for command
 

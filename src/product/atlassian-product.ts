@@ -51,15 +51,21 @@ export default class AtlassianProduct {
                 `${this.product.ajpPort}`
             )
             .option('--plugins <plugins>', 'with plugins')
-            .option('--jvm-args <jvmArgs>', 'with jvmargs');
+            .option('--jvm-args <jvmArgs>', 'with jvmargs')
+            .option(
+                '--amps-version <ampsVersion>',
+                'with amps version',
+                '8.2.0'
+            );
     }
 
     _runStandaloneArgs(version: string, basicJvmArgs: string): Array<string> {
-        // TODO : extract amps version
         const params = [
             `-s`,
             path.resolve(_atlassianDevboxHome(), `settings.xml`),
-            `com.atlassian.maven.plugins:amps-maven-plugin:8.2.0:run-standalone`,
+            `com.atlassian.maven.plugins:amps-maven-plugin:${
+                this.program.opts().ampsVersion
+            }:run-standalone`,
             `-Dproduct=${this.product.name}`,
             `-Dproduct.version=${version}`,
             `-Dserver=localhost`,
