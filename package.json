@@ -1,6 +1,6 @@
 {
   "name": "atlassian-devbox",
-  "version": "1.0.0-m02",
+  "version": "1.0.0-m03",
   "description": "atlassian devbox",
   "preferGlobal": true,
   "bin": {
@@ -45,6 +45,7 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
+    "chalk": "^4.1.1",
     "commander": "^8.0.0",
     "fs-extra": "^10.0.0"
   }

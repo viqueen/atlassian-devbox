@@ -2,6 +2,7 @@ import path from 'path';
 import os from 'os';
 import { spawn } from 'child_process';
 import fs from 'fs';
+import chalk from 'chalk';
 
 export const _atlassianDevboxHome = (): string => {
     const directory = path.resolve(os.homedir(), '.atlassian-devbox');
@@ -11,6 +12,8 @@ export const _atlassianDevboxHome = (): string => {
 
 export const _execute = (cmd: string, params: Array<string>) => {
     const directory = _atlassianDevboxHome();
+    console.log(chalk.green(`Executing: `));
+    console.log(chalk.green(`${cmd} ${params.join(' ')}`));
     spawn(cmd, params, { cwd: directory, stdio: 'inherit' });
 };
 

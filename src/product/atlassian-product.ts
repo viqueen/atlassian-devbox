@@ -8,6 +8,7 @@ import {
     _extractFileWithPredicate,
     _removeDirectory
 } from './util';
+import chalk from 'chalk';
 
 interface AtlassianProductDefinition {
     name: string;
@@ -50,8 +51,8 @@ export default class AtlassianProduct {
                 'with ajp port',
                 `${this.product.ajpPort}`
             )
-            .option('--plugins <plugins>', 'with plugins')
-            .option('--jvm-args <jvmArgs>', 'with jvmargs')
+            .option('--plugins <plugins>', 'with plugins', '')
+            .option('--jvm-args <jvmArgs>', 'with jvmargs', '')
             .option(
                 '--amps-version <ampsVersion>',
                 'with amps version',
@@ -59,7 +60,10 @@ export default class AtlassianProduct {
             );
     }
 
-    _runStandaloneArgs(version: string, basicJvmArgs: string): Array<string> {
+    _runStandaloneArgs(
+        version: string,
+        basicJvmArgs: Array<string>
+    ): Array<string> {
         const params = [
             `-s`,
             path.resolve(_atlassianDevboxHome(), `settings.xml`),
@@ -71,44 +75,47 @@ export default class AtlassianProduct {
             `-Dserver=localhost`,
             `-Dhttp.port=${this.program.opts().httpPort}`,
             `-Dcontext.path=${this.program.opts().contextPath}`,
-            `-Dajp.port=${this.program.opts().ajpPort}`
+            `-Dajp.port=${this.program.opts().ajpPort}`,
+            ...this.product.jvmArgs
         ];
 
         // plugins
-        const plugins = [...this.product.plugins];
-        const additionalPlugins = this.program.opts().plugins;
-        if (additionalPlugins) {
-            plugins.push(additionalPlugins);
-        }
+        const additionalPlugins = this.program
+            .opts()
+            .plugins.split(',')
+            .filter((p: string) => p !== '');
+        const plugins = [...this.product.plugins, ...additionalPlugins];
         if (plugins.length > 0) {
             params.push(`-Dplugins=${plugins.join(',')}`);
         }
 
         // jvmargs
-        const jvmArgs = [...this.product.jvmArgs];
-        jvmArgs.push(basicJvmArgs);
-        const additionalJvmArgs = this.program.opts().jvmArgs;
-        if (additionalJvmArgs) {
-            jvmArgs.push(additionalJvmArgs);
-        }
+        const additionalJvmArgs = this.program
+            .opts()
+            .jvmArgs.split(' ')
+            .filter((a: string) => a !== '');
+        const jvmArgs = [...basicJvmArgs, ...additionalJvmArgs];
         if (jvmArgs.length > 0) {
-            params.push(`-Djvmargs='${jvmArgs.join(' ')}'`);
+            params.push(`-Djvmargs=${jvmArgs.join(' ')}`);
         }
 
         return params;
     }
 
     _startCmdMvnParams(version: string): Array<string> {
-        return this._runStandaloneArgs(version, '-Xmx2048m');
+        return this._runStandaloneArgs(version, ['-Xmx2g', '-Xms1g']);
     }
 
     _debugCmdMvnParams(version: string): Array<string> {
-        return this._runStandaloneArgs(
-            version,
-            `-Xmx2048m -Xdebug -Xrunjdwp:transport=dt_socket,address=${
+        return this._runStandaloneArgs(version, [
+            `-Xmx2g`,
+            `-Xms1g`,
+            `-Xdebug`,
+            `-Xrunjdwp:transport=dt_socket,address=${
                 this.program.opts().debugPort
-            },server=y,suspend=n -Datlassian.dev.mode=true`
-        );
+            },server=y,suspend=n`,
+            `-Datlassian.dev.mode=true`
+        ]);
     }
 
     get(): Command {
@@ -135,11 +142,11 @@ export default class AtlassianProduct {
                 if (name === 'start') {
                     const params = this._startCmdMvnParams(version);
                     const cmd = ['mvn', params.join(' ')];
-                    console.log(cmd.join(' '));
+                    console.log(chalk.green(cmd.join(' ')));
                 } else if (name === 'debug') {
                     const params = this._debugCmdMvnParams(version);
                     const cmd = ['mvn', params.join(' ')];
-                    console.log(cmd.join(' '));
+                    console.log(chalk.green(cmd.join(' ')));
                 } else {
                     console.log('unknown command : [ start, debug ] allowed');
                 }
