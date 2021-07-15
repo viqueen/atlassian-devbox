@@ -8,8 +8,21 @@
 
 ## install it
 
+### from npm
+
+* first time
 ```bash
 npm install -g atlassian-devbox
+```
+
+* does it need an update ?
+```bash
+npm outdated -g --depth=0
+```
+
+* update it
+```bash
+npm update -g atlassian-devbox
 ```
 
 ### from source
