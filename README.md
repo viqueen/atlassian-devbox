@@ -1,5 +1,10 @@
 # atlassian-devbox
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=viqueen_atlassian-devbox&metric=alert_status)](https://sonarcloud.io/dashboard?id=viqueen_atlassian-devbox)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=viqueen_atlassian-devbox&metric=security_rating)](https://sonarcloud.io/dashboard?id=viqueen_atlassian-devbox)
+[![Known Vulnerabilities](https://snyk.io/test/github/viqueen/atlassian-devbox/badge.svg?targetFile=package.json)](https://snyk.io/test/github/viqueen/atlassian-devbox?targetFile=package.json)
+[![npm version](https://badge.fury.io/js/atlassian-devbox.svg)](https://badge.fury.io/js/atlassian-devbox)
+
 ## requirements
 
 * [java - 8 / 11](https://adoptopenjdk.net/)
