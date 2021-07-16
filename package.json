@@ -8,6 +8,7 @@
     "bitbucket": "dist/cli/bitbucket.js",
     "confluence": "dist/cli/confluence.js",
     "crowd": "dist/cli/crowd.js",
+    "ctk-server": "dist/cli/ctk-server.js",
     "fecru": "dist/cli/fecru.js",
     "jira": "dist/cli/jira.js"
   },

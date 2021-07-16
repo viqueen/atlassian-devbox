@@ -52,6 +52,7 @@ bitbucket -h
 bamboo -h
 crowd -h
 fecru -h
+ctk-server -h
 ```
 
 For example this is what the Confluence script documentation looks like
