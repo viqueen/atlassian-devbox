@@ -1,6 +1,6 @@
 {
   "name": "atlassian-devbox",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "atlassian devbox",
   "preferGlobal": true,
   "bin": {
@@ -8,6 +8,7 @@
     "bitbucket": "dist/cli/bitbucket.js",
     "confluence": "dist/cli/confluence.js",
     "crowd": "dist/cli/crowd.js",
+    "fecru": "dist/cli/fecru.js",
     "jira": "dist/cli/jira.js"
   },
   "scripts": {

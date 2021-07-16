@@ -222,10 +222,11 @@ export default class AtlassianProduct {
                     true,
                     (parent, filename) =>
                         filename.startsWith(productWebappName) &&
-                        filename.endsWith('.war'),
+                        (filename.endsWith('.war') ||
+                            filename.endsWith('.zip')),
                     (parent, filename) => {
                         const match = filename.match(
-                            `${productWebappName}-(.*).war`
+                            `${productWebappName}-(.*).(war|zip)`
                         );
                         const output = match ? match[1] : filename;
                         console.log(output);

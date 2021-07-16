@@ -51,6 +51,7 @@ jira -h
 bitbucket -h
 bamboo -h
 crowd -h
+fecru -h
 ```
 
 For example this is what the Confluence script documentation looks like
