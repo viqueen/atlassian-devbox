@@ -1,0 +1,69 @@
+image: viqueen/maven-java:3.6.3-openjdk-8-slim
+
+definitions:
+  services:
+    chrome:
+      image: selenium/standalone-chrome:3.11.0
+    firefox:
+      image: selenium/standalone-firefox:3.11.0
+
+defaultTests: &defaultTests
+  size: 2x
+  caches:
+    - maven
+  artifacts:
+    - "integration-tests/target/webdriverTests/**/*.png"
+  after-script:
+    # Collect checkstyle results, if any, and convert to Bitbucket Code Insights.
+    - pipe: atlassian/checkstyle-report:0.2.0
+
+chromeTests: &chromeTests
+  <<: *defaultTests
+  services:
+    - chrome
+
+firefoxTests: &firefoxTests
+  <<: *defaultTests
+  services:
+    - firefox
+
+pipelines:
+  default:
+    - parallel:
+      - step:
+          <<: *chromeTests
+          name: "[chrome] Confluence 7.4.8"
+          script:
+            - ./build/mvn-verify.sh 7.4.8 chrome -Dupm-javascript-tests.version=4.0.18
+
+      - step:
+          <<: *firefoxTests
+          name: "[firefox] Confluence 7.4.8"
+          script:
+            - ./build/mvn-verify.sh 7.4.8 firefox -Dupm-javascript-tests.version=4.0.18
+
+      - step:
+          name: Security Scan
+          script:
+            # Run a security scan for sensitive data.
+            # See more security tools at https://bitbucket.org/product/features/pipelines/integrations?&category=security
+            - pipe: atlassian/git-secrets-scan:0.4.3
+
+    - parallel:
+        - step:
+            name: Release Milestone
+            trigger: manual
+            caches:
+              - maven
+            script:
+              - git remote set-url origin ${BITBUCKET_GIT_SSH_ORIGIN}
+              - ./build/mvn-release.sh milestone
+
+        - step:
+            name: Release
+            trigger: manual
+            caches:
+              - maven
+            script:
+              - git remote set-url origin ${BITBUCKET_GIT_SSH_ORIGIN}
+              - ./build/mvn-release.sh final
