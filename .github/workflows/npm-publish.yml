@@ -1,4 +1,4 @@
-name: notion-renderer publish
+name: atlassian-devbox npm publish
 on:
   release:
     types: [created]
