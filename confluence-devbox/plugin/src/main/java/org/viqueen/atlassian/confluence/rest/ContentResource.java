@@ -1,16 +1,12 @@
 package org.viqueen.atlassian.confluence.rest;
 
 import com.atlassian.confluence.api.model.content.ContentRepresentation;
-import com.atlassian.confluence.api.model.content.MacroInstance;
 import com.atlassian.confluence.api.model.content.id.ContentId;
-import com.atlassian.confluence.api.model.validation.ServiceExceptionSupplier;
-import com.atlassian.confluence.api.service.content.ContentMacroService;
 import com.atlassian.confluence.api.service.content.ContentService;
 import com.atlassian.confluence.content.render.xhtml.DefaultConversionContext;
 import com.atlassian.confluence.content.render.xhtml.XhtmlException;
 import com.atlassian.confluence.content.render.xhtml.storage.macro.MacroId;
 import com.atlassian.confluence.rest.api.model.ExpansionsParser;
-import com.atlassian.confluence.xhtml.api.MacroDefinition;
 import com.atlassian.confluence.xhtml.api.XhtmlContent;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.renderer.RenderContext;
@@ -22,11 +18,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.atlassian.confluence.api.model.validation.ServiceExceptionSupplier.notFound;
 
