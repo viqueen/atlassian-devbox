@@ -4,21 +4,19 @@ import com.atlassian.confluence.test.rest.api.ConfluenceRestClient;
 import com.atlassian.confluence.test.stateless.ConfluenceStatelessRestTestRunner;
 import com.atlassian.confluence.test.stateless.fixtures.Fixture;
 import com.atlassian.confluence.test.stateless.fixtures.UserFixture;
-import com.sun.jersey.api.client.ClientResponse;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
-import javax.ws.rs.core.Response;
+import java.util.Map;
 
 import static com.atlassian.confluence.test.stateless.fixtures.UserFixture.userFixture;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasKey;
 
 @RunWith(ConfluenceStatelessRestTestRunner.class)
 public class HealthCheckResourceStatelessTest {
-
-    private static final String HEALTH_CHECK_DEVBOX_ENDPOINT = "/rest/devbox/latest/health-check";
 
     @Inject
     private static ConfluenceRestClient restClient;
@@ -26,11 +24,19 @@ public class HealthCheckResourceStatelessTest {
     @Fixture
     private static final UserFixture user = userFixture().build();
 
+    private static DevboxRestClient devboxRestClient;
+
+    @BeforeClass
+    public static void initialise() {
+        devboxRestClient = new DevboxRestClient(restClient);
+    }
+
     @Test
     public void ping200OK() {
-        ClientResponse response = restClient.createSession(user.get())
-                .resource(HEALTH_CHECK_DEVBOX_ENDPOINT + "/ping")
-                .get(ClientResponse.class);
-        assertThat(response.getStatusInfo().getStatusCode(), equalTo(Response.Status.OK.getStatusCode()));
+        Map<String, String> response = devboxRestClient.createSession(user.get())
+                .healthCheck()
+                .ping();
+
+        assertThat(response, hasKey("components"));
     }
 }
