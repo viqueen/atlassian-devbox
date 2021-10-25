@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import javax.inject.Inject;
 import java.util.Map;
 
+import static com.atlassian.confluence.test.rpc.api.permissions.GlobalPermission.SYSTEM_ADMIN;
 import static com.atlassian.confluence.test.stateless.fixtures.UserFixture.userFixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasKey;
@@ -22,7 +23,9 @@ public class HealthCheckResourceStatelessTest {
     private static ConfluenceRestClient restClient;
 
     @Fixture
-    private static final UserFixture user = userFixture().build();
+    private static final UserFixture sysAdmin = userFixture()
+            .globalPermission(SYSTEM_ADMIN)
+            .build();
 
     private static DevboxRestClient devboxRestClient;
 
@@ -33,7 +36,7 @@ public class HealthCheckResourceStatelessTest {
 
     @Test
     public void ping200OK() {
-        Map<String, String> response = devboxRestClient.createSession(user.get())
+        Map<String, String> response = devboxRestClient.createSession(sysAdmin.get())
                 .healthCheck()
                 .ping();
 
