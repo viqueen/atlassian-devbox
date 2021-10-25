@@ -8,6 +8,13 @@ on:
 jobs:
   mvn-build:
     runs-on: ubuntu-20.04
+
+    services:
+      selenium:
+        image: selenium/standalone-chrome:3.11.0
+        ports:
+          - 4444:4444
+
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK
