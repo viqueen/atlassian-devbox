@@ -31,7 +31,7 @@ public class DevboxRestSession {
 
     public static class HealthCheckRest extends RestComponent {
 
-        private static final String HEALTH_CHECK_RESOURCE = DEVBOX_RESOURCE_BASE + "/health";
+        private static final String HEALTH_CHECK_RESOURCE = DEVBOX_RESOURCE_BASE + "/health-check";
 
         public HealthCheckRest(ConfluenceRestSession session) {
             super(session);
