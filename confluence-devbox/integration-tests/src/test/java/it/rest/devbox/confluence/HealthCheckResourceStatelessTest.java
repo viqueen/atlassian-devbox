@@ -30,7 +30,7 @@ public class HealthCheckResourceStatelessTest {
     public void ping200OK() {
         ClientResponse response = restClient.createSession(user.get())
                 .resource(HEALTH_CHECK_DEVBOX_ENDPOINT + "/ping")
-                .head();
+                .get(ClientResponse.class);
         assertThat(response.getStatusInfo().getStatusCode(), equalTo(Response.Status.OK.getStatusCode()));
     }
 }
