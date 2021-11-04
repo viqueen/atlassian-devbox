@@ -5,11 +5,30 @@
         <vendor name="${project.organization.name}" url="${project.organization.url}" />
     </plugin-info>
 
+    <!-- add our i18n resource -->
+    <resource type="i18n" name="i18n" location="confluence-devbox"/>
+
     <rest key="confluence-devbox-rest-resources"
           name="Confluence Devbox Rest Resources"
           path="/devbox"
           version="1.0">
         <package>org.viqueen.atlassian.confluence.rest</package>
     </rest>
+
+    <web-item name="community-scroll-action-web-ui" key="community-scroll-action-web-ui" section="system.content.action/primary" weight="10">
+        <description key="item.community-scroll-action-web-ui.link.desc">Adds the "Community Scroll" action into the Tools menu.</description>
+        <label key="item.community-scroll-action.label">Community Scroll Action</label>
+        <link linkId="community-scroll-action">/plugins/community-scroll/scroll.action?pageId=$page.id</link>
+    </web-item>
+
+    <xwork name="community-scroll-action-xwork" key="community-scroll-action-xwork">
+        <description key="item.community-scroll-action-xwork.link.desc">Defines what the "Community Scroll" action does.</description>
+        <package name="community-scroll" extends="default" namespace="/plugins/community-scroll">
+            <default-interceptor-ref name="defaultStack"/>
+            <action name="scroll" class="org.viqueen.atlassian.confluence.actions.CommunityScrollExporterAction">
+                <result name="success" type="redirect">${page.urlPath}</result>
+            </action>
+        </package>
+    </xwork>
 
 </atlassian-plugin>

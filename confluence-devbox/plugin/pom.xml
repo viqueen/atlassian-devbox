@@ -44,6 +44,21 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- atlassian developer community -->
+        <dependency>
+            <groupId>com.k15t.scroll</groupId>
+            <artifactId>scroll-pdf-exporter-java-api</artifactId>
+            <version>1.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.k15t.scroll</groupId>
+            <artifactId>scroll-word-exporter-java-api</artifactId>
+            <version>1.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>com.github.javafaker</groupId>
             <artifactId>javafaker</artifactId>
@@ -104,6 +119,8 @@
                         <Import-Package>
                             org.springframework.osgi.*;resolution:="optional",
                             org.eclipse.gemini.blueprint.*;resolution:="optional",
+                            com.k15t.scroll.exporter.api.pdf;version="[1.0.0,2.0.0)",
+                            com.k15t.scroll.exporter.api.word;version="[1.0.0,2.0.0)",
                             *
                         </Import-Package>
 
@@ -130,4 +147,11 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>k15t</id>
+            <url>https://nexus.k15t.com/content/repositories/releases</url>
+        </repository>
+    </repositories>
 </project>
