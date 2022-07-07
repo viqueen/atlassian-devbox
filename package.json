@@ -42,7 +42,7 @@
   "devDependencies": {
     "@types/node": "^17.0.38",
     "husky": "^8.0.1",
-    "npm-check-updates": "^13.0.3",
+    "npm-check-updates": "^15.2.0",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
     "typescript": "^4.7.2"
