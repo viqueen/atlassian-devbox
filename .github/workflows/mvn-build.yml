@@ -6,7 +6,7 @@ on:
       - 'confluence-devbox/**'
 
 jobs:
-  mvn-build:
+  mvn-build-java-8:
     runs-on: ubuntu-20.04
 
     services:
@@ -21,6 +21,25 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '8'
+          distribution: 'adopt'
+      - name: Build with Maven
+        run: mvn --batch-mode verify
+
+  mvn-build-java-11:
+    runs-on: ubuntu-20.04
+
+    services:
+      selenium:
+        image: selenium/standalone-chrome:3.11.0
+        ports:
+          - 4444:4444
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
           distribution: 'adopt'
       - name: Build with Maven
         run: mvn --batch-mode verify
