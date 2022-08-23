@@ -12,4 +12,13 @@
         <package>org.viqueen.atlassian.confluence.rest</package>
     </rest>
 
+    <web-item
+            key="confluence-web-item-plugin-module"
+            section="system.user/user-operations"
+            weight="1"
+    >
+        <label>WebUI Module</label>
+        <link>https://developer.atlassian.com/server/confluence/web-ui-modules/</link>
+    </web-item>
+
 </atlassian-plugin>
