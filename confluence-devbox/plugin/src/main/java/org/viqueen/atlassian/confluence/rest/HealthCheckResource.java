@@ -4,6 +4,7 @@ import com.atlassian.sal.api.permission.PermissionEnforcer;
 import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.viqueen.atlassian.confluence.services.SampleCommunityService;
 
 import javax.ws.rs.GET;
@@ -21,9 +22,11 @@ import static java.util.Collections.singletonMap;
 public class HealthCheckResource {
 
     private static final Logger log = LoggerFactory.getLogger(HealthCheckResource.class);
+
     private final SampleCommunityService communityService;
     private final PermissionEnforcer permissionEnforcer;
 
+    @Autowired
     public HealthCheckResource(
             final SampleCommunityService communityService,
             final PermissionEnforcer permissionEnforcer

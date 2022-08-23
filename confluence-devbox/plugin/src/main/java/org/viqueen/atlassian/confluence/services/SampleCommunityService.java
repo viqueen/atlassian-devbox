@@ -4,6 +4,7 @@ import com.atlassian.confluence.api.model.content.id.ContentId;
 import com.atlassian.confluence.api.model.link.Link;
 import com.atlassian.confluence.api.model.link.LinkType;
 import com.atlassian.confluence.api.service.content.ContentService;
+import com.atlassian.confluence.xhtml.api.XhtmlContent;
 import com.atlassian.plugin.PluginAccessor;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.sal.api.ApplicationProperties;
@@ -24,19 +25,23 @@ public class SampleCommunityService {
     private final PluginAccessor pluginAccessor;
     private final LicenseHandler licenceHandler;
     private final UserSettingsService userSettingsService;
+    private final XhtmlContent xhtmlContent;
 
     @Autowired
     public SampleCommunityService(
-            @ComponentImport ContentService contentService,
-            @ComponentImport ApplicationProperties applicationProperties,
-            @ComponentImport PluginAccessor pluginAccessor,
-            @ComponentImport LicenseHandler licenceHandler,
-            @ComponentImport UserSettingsService userSettingsService) {
+            @ComponentImport final ContentService contentService,
+            @ComponentImport final ApplicationProperties applicationProperties,
+            @ComponentImport final PluginAccessor pluginAccessor,
+            @ComponentImport final LicenseHandler licenceHandler,
+            @ComponentImport final UserSettingsService userSettingsService,
+            @ComponentImport final XhtmlContent xhtmlContent
+    ) {
         this.contentService = contentService;
         this.applicationProperties = applicationProperties;
         this.pluginAccessor = pluginAccessor;
         this.licenceHandler = licenceHandler;
         this.userSettingsService = userSettingsService;
+        this.xhtmlContent = xhtmlContent;
     }
 
     // https://community.developer.atlassian.com/t/get-content-link-to-content-by-id-programmatically/34427
@@ -56,6 +61,7 @@ public class SampleCommunityService {
                 ", pluginAccessor=" + pluginAccessor +
                 ", licenceHandler=" + licenceHandler +
                 ", userSettingsService=" + userSettingsService +
+                ", xhtmlContent=" + xhtmlContent +
                 '}';
     }
 }

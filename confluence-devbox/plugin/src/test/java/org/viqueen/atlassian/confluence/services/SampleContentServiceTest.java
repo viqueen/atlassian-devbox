@@ -5,6 +5,7 @@ import com.atlassian.confluence.api.model.content.id.ContentId;
 import com.atlassian.confluence.api.model.link.Link;
 import com.atlassian.confluence.api.model.link.LinkType;
 import com.atlassian.confluence.api.service.content.ContentService;
+import com.atlassian.confluence.xhtml.api.XhtmlContent;
 import com.atlassian.plugin.PluginAccessor;
 import com.atlassian.sal.api.ApplicationProperties;
 import com.atlassian.sal.api.license.LicenseHandler;
@@ -38,9 +39,12 @@ public class SampleContentServiceTest {
             @Mock final LicenseHandler licenceHandler,
             @Mock final UserSettingsService userSettingsService,
             @Mock final ContentService.ContentFinder contentFinder,
-            @Mock final Content content) {
+            @Mock final Content content,
+            @Mock final XhtmlContent xhtmlContent
+    ) {
         sampleContentService = new SampleCommunityService(
-                contentService, applicationProperties, pluginAccessor, licenceHandler, userSettingsService
+                contentService, applicationProperties, pluginAccessor, licenceHandler, userSettingsService,
+                xhtmlContent
         );
         when(contentService.find()).thenReturn(contentFinder);
         when(contentFinder.withId(any(ContentId.class))).thenReturn(contentFinder);
