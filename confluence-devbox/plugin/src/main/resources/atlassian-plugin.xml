@@ -21,4 +21,13 @@
         <link>https://developer.atlassian.com/server/confluence/web-ui-modules/</link>
     </web-item>
 
+    <xhtml-macro
+            name="Confluence Devbox Macro"
+            key="confluence-devbox-macro"
+            class="org.viqueen.atlassian.confluence.macros.DevboxMacro"
+    >
+        <category name="formatting" />
+        <parameters />
+    </xhtml-macro>
+
 </atlassian-plugin>
