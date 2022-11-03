@@ -13,6 +13,7 @@ const program = executable({
     plugins: [],
     jvmArgs: [
         '-Datlassian.mail.senddisabled=false',
+        '-Datlassian.mail.popdisabled=false',
         '-Djira.websudo.is.disabled=true'
     ]
 });
