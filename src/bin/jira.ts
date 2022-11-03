@@ -7,6 +7,7 @@ const program = executable({
     contextPath: '/jira',
     httpPort: 2990,
     ajpPort: 9009,
+    debugPort: 5005,
     plugins: []
 });
 

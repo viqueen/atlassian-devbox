@@ -12,7 +12,7 @@ export const executable = (definition: ProductDefinition) => {
         'with amps version',
         '8.2.0'
     );
-    program.option('--plugins <withPlugins>', 'with plugins', '');
+    program.option('--with-plugins <withPlugins>', 'with plugins', '');
 
     // commands
     program
@@ -27,6 +27,20 @@ export const executable = (definition: ProductDefinition) => {
                 withPlugins
             }).startCmd();
             executeCommand(start);
+        });
+
+    program
+        .command('debug <productVersion>')
+        .description(`runs ${definition.name} in debug mode`)
+        .action((productVersion) => {
+            const options = program.opts();
+            const { ampsVersion, withPlugins } = options;
+            const debug = product(definition, {
+                ampsVersion,
+                productVersion,
+                withPlugins
+            }).debugCmd();
+            executeCommand(debug);
         });
 
     return program;

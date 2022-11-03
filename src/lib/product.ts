@@ -1,20 +1,25 @@
 import * as path from 'path';
 import { home } from './home';
 import { ProductDefinition, RunnerOptions } from './types';
+import { ExecuteCommand } from './execute-command';
 
 export type Product = {
-    startCmd: () => {
-        cmd: string;
-        params: string[];
-        cwd: string;
-    };
+    startCmd: () => ExecuteCommand;
+    debugCmd: () => ExecuteCommand;
 };
 
 export const product = (
-    { name, httpPort, ajpPort, contextPath, plugins }: ProductDefinition,
+    {
+        name,
+        httpPort,
+        ajpPort,
+        debugPort,
+        contextPath,
+        plugins
+    }: ProductDefinition,
     { ampsVersion, productVersion, withPlugins }: RunnerOptions
 ): Product => {
-    const startCmd = () => {
+    const _runStandalone = (jvmArgs: string[]) => {
         const directory = home();
         const params = [
             `-s`,
@@ -35,8 +40,25 @@ export const product = (
         if (finalPlugins.length > 0) {
             params.push(`-Dplugins=${finalPlugins.join(',')}`);
         }
+
+        params.push(`-Djvmargs="${jvmArgs.join(' ')}"`);
+
         return { cmd: 'mvn', params, cwd: directory };
     };
 
-    return { startCmd };
+    const startCmd = () => {
+        return _runStandalone(['-Xmx2g', '-Xms1g']);
+    };
+
+    const debugCmd = () => {
+        return _runStandalone([
+            `-Xmx2g`,
+            `-Xms1g`,
+            `-Xdebug`,
+            `-Xrunjdwp:transport=dt_socket,address=${debugPort},server=y,suspend=n`,
+            `-Datlassian.dev.mode=true`
+        ]);
+    };
+
+    return { startCmd, debugCmd };
 };

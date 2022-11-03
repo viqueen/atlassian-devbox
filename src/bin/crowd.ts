@@ -7,6 +7,7 @@ const program = executable({
     contextPath: '/crowd',
     httpPort: 4990,
     ajpPort: 4009,
+    debugPort: 5005,
     plugins: []
 });
 

@@ -7,6 +7,7 @@ const program = executable({
     contextPath: '/bamboo',
     httpPort: 6990,
     ajpPort: 6009,
+    debugPort: 5005,
     plugins: ['com.atlassian.bamboo.plugins:atlassian-bamboo-plugin-test-utils']
 });
 

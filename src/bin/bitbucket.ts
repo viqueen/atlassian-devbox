@@ -7,6 +7,7 @@ const program = executable({
     contextPath: '/bitbucket',
     httpPort: 7990,
     ajpPort: 7009,
+    debugPort: 5005,
     plugins: []
 });
 
