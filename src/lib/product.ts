@@ -11,8 +11,8 @@ export type Product = {
 };
 
 export const product = (
-    { name, httpPort, ajpPort, contextPath }: ProductDefinition,
-    { ampsVersion, productVersion }: RunnerOptions
+    { name, httpPort, ajpPort, contextPath, plugins }: ProductDefinition,
+    { ampsVersion, productVersion, withPlugins }: RunnerOptions
 ): Product => {
     const startCmd = () => {
         const directory = home();
@@ -27,6 +27,14 @@ export const product = (
             `-Dcontext.path=${contextPath}`,
             `-Dajp.port=${ajpPort}`
         ];
+
+        const additionalPlugins = withPlugins
+            .split(',')
+            .filter((p) => p !== '');
+        const finalPlugins = [...plugins, ...additionalPlugins];
+        if (finalPlugins.length > 0) {
+            params.push(`-Dplugins=${finalPlugins.join(',')}`);
+        }
         return { cmd: 'mvn', params, cwd: directory };
     };
 

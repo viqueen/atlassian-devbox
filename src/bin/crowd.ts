@@ -6,7 +6,8 @@ const program = executable({
     name: 'crowd',
     contextPath: '/crowd',
     httpPort: 4990,
-    ajpPort: 4009
+    ajpPort: 4009,
+    plugins: []
 });
 
 program.version(require('../../package.json').version);

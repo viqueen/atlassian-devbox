@@ -6,7 +6,8 @@ const program = executable({
     name: 'bitbucket',
     contextPath: '/bitbucket',
     httpPort: 7990,
-    ajpPort: 7009
+    ajpPort: 7009,
+    plugins: []
 });
 
 program.version(require('../../package.json').version);

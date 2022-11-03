@@ -12,16 +12,19 @@ export const executable = (definition: ProductDefinition) => {
         'with amps version',
         '8.2.0'
     );
+    program.option('--plugins <withPlugins>', 'with plugins', '');
 
     // commands
     program
         .command('start <productVersion>')
         .description(`runs ${definition.name}`)
         .action((productVersion) => {
-            const ampsVersion = program.opts().ampsVersion;
+            const options = program.opts();
+            const { ampsVersion, withPlugins } = options;
             const start = product(definition, {
                 ampsVersion,
-                productVersion
+                productVersion,
+                withPlugins
             }).startCmd();
             executeCommand(start);
         });
