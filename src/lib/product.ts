@@ -6,6 +6,9 @@ import { ExecuteCommand } from './execute-command';
 export type Product = {
     startCmd: (runnerOptions: RunnerOptions) => ExecuteCommand;
     debugCmd: (runnerOptions: RunnerOptions) => ExecuteCommand;
+    logCmd: (
+        runnerOptions: Pick<RunnerOptions, 'productVersion'>
+    ) => ExecuteCommand;
 };
 
 export const product = ({
@@ -60,5 +63,22 @@ export const product = ({
         ]);
     };
 
-    return { startCmd, debugCmd };
+    const logCmd = ({
+        productVersion
+    }: Pick<RunnerOptions, 'productVersion'>) => {
+        const directory = home();
+        const file = path.resolve(
+            directory,
+            `amps-standalone-${productVersion}`,
+            'target',
+            `${name}-LATEST.log`
+        );
+        return {
+            cmd: 'tail',
+            params: ['-f', file],
+            cwd: directory
+        };
+    };
+
+    return { startCmd, debugCmd, logCmd };
 };

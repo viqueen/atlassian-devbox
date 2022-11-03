@@ -46,6 +46,14 @@ export const executable = (definition: ProductDefinition) => {
         });
 
     program
+        .command('logs <productVersion>')
+        .description(`tails ${definition.name} log file`)
+        .action((productVersion) => {
+            const log = product(definition).logCmd({ productVersion });
+            executeCommand(log);
+        });
+
+    program
         .command('list')
         .description(`lists installed ${definition.name} instances`)
         .action(() => {
