@@ -10,7 +10,7 @@ export const executable = (definition: ProductDefinition) => {
     program.option(
         '--amps-version <ampsVersion>',
         'with amps version',
-        '8.2.0'
+        '8.8.1'
     );
     program.option('--with-plugins <withPlugins>', 'with plugins', '');
 
