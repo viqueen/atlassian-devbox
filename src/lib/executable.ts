@@ -2,6 +2,8 @@ import { Command } from 'commander';
 import { ProductDefinition } from './types';
 import { product } from './product';
 import { executeCommand } from './execute-command';
+import { home } from './home';
+import * as fs from 'fs';
 
 export const executable = (definition: ProductDefinition) => {
     const program = new Command();
@@ -41,6 +43,16 @@ export const executable = (definition: ProductDefinition) => {
                 withPlugins
             }).debugCmd();
             executeCommand(debug);
+        });
+
+    program
+        .command('list')
+        .description(`lists installed ${definition.name} instances`)
+        .action(() => {
+            const directory = home();
+            fs.readdirSync(directory)
+                .filter((d) => d.includes(definition.name))
+                .forEach((d) => console.info(d));
         });
 
     return program;
