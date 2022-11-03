@@ -10,7 +10,10 @@ const program = executable({
     httpPort: 1990,
     ajpPort: 8009,
     debugPort: 5005,
-    plugins: []
+    plugins: [],
+    jvmArgs: [
+        '-Datlassian.plugins.startup.options=disable-addons=com.atlassian.migration.agent'
+    ]
 });
 
 program.version(require('../../package.json').version);

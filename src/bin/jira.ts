@@ -10,7 +10,11 @@ const program = executable({
     httpPort: 2990,
     ajpPort: 9009,
     debugPort: 5005,
-    plugins: []
+    plugins: [],
+    jvmArgs: [
+        '-Datlassian.mail.senddisabled=false',
+        '-Djira.websudo.is.disabled=true'
+    ]
 });
 
 program.version(require('../../package.json').version);

@@ -2,8 +2,6 @@ import { Command } from 'commander';
 import { ProductDefinition } from './types';
 import { product } from './product';
 import { executeCommand } from './execute-command';
-import { home } from './home';
-import * as fs from 'fs';
 
 export const executable = (definition: ProductDefinition) => {
     const program = new Command();
@@ -15,6 +13,7 @@ export const executable = (definition: ProductDefinition) => {
         '8.8.1'
     );
     program.option('--with-plugins <withPlugins>', 'with plugins', '');
+    program.option('--with-jvm-args <withJvmArgs>', 'with jvm args', '');
 
     // commands
     program
@@ -22,11 +21,12 @@ export const executable = (definition: ProductDefinition) => {
         .description(`runs ${definition.name}`)
         .action((productVersion) => {
             const options = program.opts();
-            const { ampsVersion, withPlugins } = options;
+            const { ampsVersion, withPlugins, withJvmArgs } = options;
             const start = product(definition).startCmd({
                 ampsVersion,
                 productVersion,
-                withPlugins
+                withPlugins,
+                withJvmArgs
             });
             executeCommand(start);
         });
@@ -36,11 +36,12 @@ export const executable = (definition: ProductDefinition) => {
         .description(`runs ${definition.name} in debug mode`)
         .action((productVersion) => {
             const options = program.opts();
-            const { ampsVersion, withPlugins } = options;
+            const { ampsVersion, withPlugins, withJvmArgs } = options;
             const debug = product(definition).debugCmd({
                 ampsVersion,
                 productVersion,
-                withPlugins
+                withPlugins,
+                withJvmArgs
             });
             executeCommand(debug);
         });

@@ -23,12 +23,18 @@ export const product = ({
     debugPort,
     contextPath,
     plugins,
+    jvmArgs,
     groupId,
     webappName
 }: ProductDefinition): Product => {
     const _runStandalone = (
-        { ampsVersion, productVersion, withPlugins }: RunnerOptions,
-        jvmArgs: string[]
+        {
+            ampsVersion,
+            productVersion,
+            withPlugins,
+            withJvmArgs
+        }: RunnerOptions,
+        defaultJvmArgs: string[]
     ) => {
         const directory = home();
         const params = [
@@ -40,7 +46,8 @@ export const product = ({
             `-Dserver=localhost`,
             `-Dhttp.port=${httpPort}`,
             `-Dcontext.path=${contextPath}`,
-            `-Dajp.port=${ajpPort}`
+            `-Dajp.port=${ajpPort}`,
+            ...jvmArgs
         ];
 
         const additionalPlugins = withPlugins
@@ -51,7 +58,12 @@ export const product = ({
             params.push(`-Dplugins=${finalPlugins.join(',')}`);
         }
 
-        params.push(`-Djvmargs="${jvmArgs.join(' ')}"`);
+        const additionalJvmArgs = withJvmArgs
+            .split(' ')
+            .filter((j) => j !== '');
+        const finalJvmArgs = [...defaultJvmArgs, ...additionalJvmArgs];
+
+        params.push(`-Djvmargs=${finalJvmArgs.join(' ')}`);
 
         return { cmd: 'mvn', params, cwd: directory };
     };

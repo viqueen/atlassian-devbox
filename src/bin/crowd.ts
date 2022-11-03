@@ -10,7 +10,8 @@ const program = executable({
     httpPort: 4990,
     ajpPort: 4009,
     debugPort: 5005,
-    plugins: []
+    plugins: [],
+    jvmArgs: []
 });
 
 program.version(require('../../package.json').version);

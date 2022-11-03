@@ -10,7 +10,12 @@ const program = executable({
     httpPort: 6990,
     ajpPort: 6009,
     debugPort: 5005,
-    plugins: ['com.atlassian.bamboo.plugins:atlassian-bamboo-plugin-test-utils']
+    plugins: [
+        'com.atlassian.bamboo.plugins:atlassian-bamboo-plugin-test-utils'
+    ],
+    jvmArgs: [
+        '-Datlassian.darkfeature.bamboo.experimental.rest.admin.enabled=true'
+    ]
 });
 
 program.version(require('../../package.json').version);
