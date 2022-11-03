@@ -57,10 +57,20 @@ export const executable = (definition: ProductDefinition) => {
         .command('list')
         .description(`lists installed ${definition.name} instances`)
         .action(() => {
-            const directory = home();
-            fs.readdirSync(directory)
-                .filter((d) => d.includes(definition.name))
-                .forEach((d) => console.info(d));
+            product(definition)
+                .listInstances()
+                .forEach((i) => console.info(i));
+        });
+
+    program
+        .command('versions')
+        .description(
+            `lists available ${definition.name} versions in local maven repo`
+        )
+        .action(() => {
+            product(definition)
+                .listVersions()
+                .forEach((v) => console.info(v));
         });
 
     return program;

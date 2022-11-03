@@ -1,5 +1,7 @@
 export type ProductDefinition = {
     name: string;
+    groupId: string;
+    webappName: string;
     httpPort: number;
     ajpPort: number;
     debugPort: number;

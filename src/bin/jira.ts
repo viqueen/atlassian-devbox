@@ -4,6 +4,8 @@ import { executable } from '../lib/executable';
 
 const program = executable({
     name: 'jira',
+    groupId: 'com.atlassian.jira',
+    webappName: 'atlassian-jira-webapp',
     contextPath: '/jira',
     httpPort: 2990,
     ajpPort: 9009,

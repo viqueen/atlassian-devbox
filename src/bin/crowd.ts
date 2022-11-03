@@ -4,6 +4,8 @@ import { executable } from '../lib/executable';
 
 const program = executable({
     name: 'crowd',
+    groupId: 'com.atlassian.crowd',
+    webappName: 'crowd-web-app',
     contextPath: '/crowd',
     httpPort: 4990,
     ajpPort: 4009,

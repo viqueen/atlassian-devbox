@@ -4,6 +4,8 @@ import { executable } from '../lib/executable';
 
 const program = executable({
     name: 'bamboo',
+    groupId: 'com.atlassian.bamboo',
+    webappName: 'atlassian-bamboo-web-app',
     contextPath: '/bamboo',
     httpPort: 6990,
     ajpPort: 6009,

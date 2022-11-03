@@ -2,6 +2,9 @@ import * as path from 'path';
 import { home } from './home';
 import { ProductDefinition, RunnerOptions } from './types';
 import { ExecuteCommand } from './execute-command';
+import fs from 'fs';
+import * as os from 'os';
+import { listFiles } from 'fs-directory';
 
 export type Product = {
     startCmd: (runnerOptions: RunnerOptions) => ExecuteCommand;
@@ -9,6 +12,8 @@ export type Product = {
     logCmd: (
         runnerOptions: Pick<RunnerOptions, 'productVersion'>
     ) => ExecuteCommand;
+    listInstances: () => string[];
+    listVersions: () => string[];
 };
 
 export const product = ({
@@ -17,7 +22,9 @@ export const product = ({
     ajpPort,
     debugPort,
     contextPath,
-    plugins
+    plugins,
+    groupId,
+    webappName
 }: ProductDefinition): Product => {
     const _runStandalone = (
         { ampsVersion, productVersion, withPlugins }: RunnerOptions,
@@ -80,5 +87,33 @@ export const product = ({
         };
     };
 
-    return { startCmd, debugCmd, logCmd };
+    const listInstances = () => {
+        const directory = home();
+        return fs.readdirSync(directory).filter((d) => d.includes(name));
+    };
+
+    const listVersions = () => {
+        const productDirectory = groupId.split('.').join(path.sep);
+        const productMavenDirectory = path.resolve(
+            os.homedir(),
+            '.m2',
+            'repository',
+            productDirectory
+        );
+        const fileNames = listFiles(productMavenDirectory, {
+            directoryFilter: () => true,
+            fileFilter: (entry) => {
+                return (
+                    entry.name.startsWith(webappName) &&
+                    (entry.name.endsWith('.war') || entry.name.endsWith('.zip'))
+                );
+            }
+        });
+        return fileNames.map((fileName) => {
+            const match = fileName.match(`${webappName}-(.*).(war|zip)`);
+            return match ? match[1] : fileName;
+        });
+    };
+
+    return { startCmd, debugCmd, logCmd, listInstances, listVersions };
 };
