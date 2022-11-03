@@ -6,13 +6,18 @@ import fs from 'fs';
 import * as os from 'os';
 import { listFiles } from 'fs-directory';
 
+type ListInstancesArgs = {
+    productVersion: string;
+    absolutePath?: boolean;
+};
+
 export type Product = {
-    startCmd: (runnerOptions: RunnerOptions) => ExecuteCommand;
-    debugCmd: (runnerOptions: RunnerOptions) => ExecuteCommand;
-    logCmd: (
+    debugInstanceCmd: (runnerOptions: RunnerOptions) => ExecuteCommand;
+    startInstanceCmd: (runnerOptions: RunnerOptions) => ExecuteCommand;
+    viewInstanceLogCmd: (
         runnerOptions: Pick<RunnerOptions, 'productVersion'>
     ) => ExecuteCommand;
-    listInstances: () => string[];
+    listInstances: (args: ListInstancesArgs) => string[];
     listVersions: () => string[];
 };
 
@@ -68,11 +73,7 @@ export const product = ({
         return { cmd: 'mvn', params, cwd: directory };
     };
 
-    const startCmd = (runnerOptions: RunnerOptions) => {
-        return _runStandalone(runnerOptions, ['-Xmx2g', '-Xms1g']);
-    };
-
-    const debugCmd = (runnerOptions: RunnerOptions) => {
+    const debugInstanceCmd = (runnerOptions: RunnerOptions) => {
         return _runStandalone(runnerOptions, [
             `-Xmx2g`,
             `-Xms1g`,
@@ -82,7 +83,11 @@ export const product = ({
         ]);
     };
 
-    const logCmd = ({
+    const startInstanceCmd = (runnerOptions: RunnerOptions) => {
+        return _runStandalone(runnerOptions, ['-Xmx2g', '-Xms1g']);
+    };
+
+    const viewInstanceLogCmd = ({
         productVersion
     }: Pick<RunnerOptions, 'productVersion'>) => {
         const directory = home();
@@ -99,9 +104,20 @@ export const product = ({
         };
     };
 
-    const listInstances = () => {
+    const listInstances = ({
+        productVersion,
+        absolutePath
+    }: ListInstancesArgs) => {
         const directory = home();
-        return fs.readdirSync(directory).filter((d) => d.includes(name));
+        return fs
+            .readdirSync(directory)
+            .filter((d) =>
+                d.startsWith(`amps-standalone-${name}-${productVersion}`)
+            )
+            .map((d) => {
+                if (absolutePath) return path.resolve(directory, d);
+                return d;
+            });
     };
 
     const listVersions = () => {
@@ -127,5 +143,11 @@ export const product = ({
         });
     };
 
-    return { startCmd, debugCmd, logCmd, listInstances, listVersions };
+    return {
+        startInstanceCmd,
+        debugInstanceCmd,
+        viewInstanceLogCmd,
+        listInstances,
+        listVersions
+    };
 };

@@ -2,6 +2,8 @@ import { Command } from 'commander';
 import { ProductDefinition } from './types';
 import { product } from './product';
 import { executeCommand } from './execute-command';
+import chalk from 'chalk';
+import * as fs from 'fs';
 
 export const executable = (definition: ProductDefinition) => {
     const program = new Command();
@@ -22,7 +24,7 @@ export const executable = (definition: ProductDefinition) => {
         .action((productVersion) => {
             const options = program.opts();
             const { ampsVersion, withPlugins, withJvmArgs } = options;
-            const start = product(definition).startCmd({
+            const start = product(definition).startInstanceCmd({
                 ampsVersion,
                 productVersion,
                 withPlugins,
@@ -37,7 +39,7 @@ export const executable = (definition: ProductDefinition) => {
         .action((productVersion) => {
             const options = program.opts();
             const { ampsVersion, withPlugins, withJvmArgs } = options;
-            const debug = product(definition).debugCmd({
+            const debug = product(definition).debugInstanceCmd({
                 ampsVersion,
                 productVersion,
                 withPlugins,
@@ -50,16 +52,37 @@ export const executable = (definition: ProductDefinition) => {
         .command('logs <productVersion>')
         .description(`tails ${definition.name} log file`)
         .action((productVersion) => {
-            const log = product(definition).logCmd({ productVersion });
+            const log = product(definition).viewInstanceLogCmd({
+                productVersion
+            });
             executeCommand(log);
         });
 
     program
-        .command('list')
-        .description(`lists installed ${definition.name} instances`)
-        .action(() => {
+        .command('remove <pattern>')
+        .description(
+            `removes ${definition.name} instance with version matching given pattern`
+        )
+        .action((pattern) => {
             product(definition)
-                .listInstances()
+                .listInstances({
+                    productVersion: pattern || '',
+                    absolutePath: true
+                })
+                .forEach((d) => {
+                    console.info(chalk.green(`removing ${d}`));
+                    fs.rmSync(d, { recursive: true });
+                });
+        });
+
+    program
+        .command('list [pattern]')
+        .description(`lists installed ${definition.name} instances`)
+        .option('-a, --absolute-path', 'list absolute path', false)
+        .action((pattern, opts) => {
+            const { absolutePath } = opts;
+            product(definition)
+                .listInstances({ productVersion: pattern || '', absolutePath })
                 .forEach((i) => console.info(i));
         });
 
