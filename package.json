@@ -13,7 +13,7 @@
     "jira": "dist/cli/jira.js"
   },
   "scripts": {
-    "build": "tsc --watch",
+    "build": "tsc",
     "ci:build": "rimraf ./dist && tsc",
     "format:check": "prettier --check src",
     "format": "prettier --check --write src",
