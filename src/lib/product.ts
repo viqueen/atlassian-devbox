@@ -4,22 +4,22 @@ import { ProductDefinition, RunnerOptions } from './types';
 import { ExecuteCommand } from './execute-command';
 
 export type Product = {
-    startCmd: () => ExecuteCommand;
-    debugCmd: () => ExecuteCommand;
+    startCmd: (runnerOptions: RunnerOptions) => ExecuteCommand;
+    debugCmd: (runnerOptions: RunnerOptions) => ExecuteCommand;
 };
 
-export const product = (
-    {
-        name,
-        httpPort,
-        ajpPort,
-        debugPort,
-        contextPath,
-        plugins
-    }: ProductDefinition,
-    { ampsVersion, productVersion, withPlugins }: RunnerOptions
-): Product => {
-    const _runStandalone = (jvmArgs: string[]) => {
+export const product = ({
+    name,
+    httpPort,
+    ajpPort,
+    debugPort,
+    contextPath,
+    plugins
+}: ProductDefinition): Product => {
+    const _runStandalone = (
+        { ampsVersion, productVersion, withPlugins }: RunnerOptions,
+        jvmArgs: string[]
+    ) => {
         const directory = home();
         const params = [
             `-s`,
@@ -46,12 +46,12 @@ export const product = (
         return { cmd: 'mvn', params, cwd: directory };
     };
 
-    const startCmd = () => {
-        return _runStandalone(['-Xmx2g', '-Xms1g']);
+    const startCmd = (runnerOptions: RunnerOptions) => {
+        return _runStandalone(runnerOptions, ['-Xmx2g', '-Xms1g']);
     };
 
-    const debugCmd = () => {
-        return _runStandalone([
+    const debugCmd = (runnerOptions: RunnerOptions) => {
+        return _runStandalone(runnerOptions, [
             `-Xmx2g`,
             `-Xms1g`,
             `-Xdebug`,

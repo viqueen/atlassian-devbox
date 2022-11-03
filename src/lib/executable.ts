@@ -23,11 +23,11 @@ export const executable = (definition: ProductDefinition) => {
         .action((productVersion) => {
             const options = program.opts();
             const { ampsVersion, withPlugins } = options;
-            const start = product(definition, {
+            const start = product(definition).startCmd({
                 ampsVersion,
                 productVersion,
                 withPlugins
-            }).startCmd();
+            });
             executeCommand(start);
         });
 
@@ -37,11 +37,11 @@ export const executable = (definition: ProductDefinition) => {
         .action((productVersion) => {
             const options = program.opts();
             const { ampsVersion, withPlugins } = options;
-            const debug = product(definition, {
+            const debug = product(definition).debugCmd({
                 ampsVersion,
                 productVersion,
                 withPlugins
-            }).debugCmd();
+            });
             executeCommand(debug);
         });
 
