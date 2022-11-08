@@ -14,16 +14,12 @@
   },
   "scripts": {
     "build": "tsc",
-    "ci:build": "rimraf ./dist && tsc",
     "format:check": "prettier --check src",
     "format": "prettier --check --write src",
-    "postinstall": "node post-install.js",
     "check-updates": "npm-check-updates -u"
   },
   "files": [
-    "dist",
-    ".atlassian-devbox",
-    "post-install.js"
+    "dist"
   ],
   "repository": {
     "type": "git",
