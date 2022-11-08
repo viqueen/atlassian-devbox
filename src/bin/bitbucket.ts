@@ -1,20 +1,18 @@
 #! /usr/bin/env node
 
-import AtlassianProduct from '../product/atlassian-product';
+import { executable } from '../lib/executable';
 
-const Bitbucket = new AtlassianProduct({
+const program = executable({
     name: 'bitbucket',
     groupId: 'com.atlassian.bitbucket',
     webappName: 'bitbucket-webapp',
-    plugins: [],
-    httpPort: 7990,
     contextPath: '/bitbucket',
-    debugPort: 5005,
+    httpPort: 7990,
     ajpPort: 7009,
+    debugPort: 5005,
+    plugins: [],
     jvmArgs: []
 });
-
-const program = Bitbucket.get();
 
 program.version(require('../../package.json').version);
 program.parse(process.argv);

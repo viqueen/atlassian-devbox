@@ -1,20 +1,18 @@
 #! /usr/bin/env node
 
-import AtlassianProduct from '../product/atlassian-product';
+import { executable } from '../lib/executable';
 
-const Crowd = new AtlassianProduct({
+const program = executable({
     name: 'crowd',
     groupId: 'com.atlassian.crowd',
     webappName: 'crowd-web-app',
-    plugins: [],
-    httpPort: 4990,
     contextPath: '/crowd',
-    debugPort: 5005,
+    httpPort: 4990,
     ajpPort: 4009,
+    debugPort: 5005,
+    plugins: [],
     jvmArgs: []
 });
-
-const program = Crowd.get();
 
 program.version(require('../../package.json').version);
 program.parse(process.argv);

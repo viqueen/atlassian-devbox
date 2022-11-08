@@ -1,29 +1,25 @@
 {
   "name": "atlassian-devbox",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "atlassian devbox",
   "preferGlobal": true,
   "bin": {
-    "bamboo": "dist/cli/bamboo.js",
-    "bitbucket": "dist/cli/bitbucket.js",
-    "confluence": "dist/cli/confluence.js",
-    "crowd": "dist/cli/crowd.js",
-    "ctk-server": "dist/cli/ctk-server.js",
-    "fecru": "dist/cli/fecru.js",
-    "jira": "dist/cli/jira.js"
+    "bamboo": "dist/bin/bamboo.js",
+    "bitbucket": "dist/bin/bitbucket.js",
+    "confluence": "dist/bin/confluence.js",
+    "crowd": "dist/bin/crowd.js",
+    "ctk-server": "dist/bin/ctk-server.js",
+    "fecru": "dist/bin/fecru.js",
+    "jira": "dist/bin/jira.js"
   },
   "scripts": {
-    "build": "tsc --watch",
-    "ci:build": "rimraf ./dist && tsc",
+    "build": "tsc",
     "format:check": "prettier --check src",
     "format": "prettier --check --write src",
-    "postinstall": "node post-install.js",
     "check-updates": "npm-check-updates -u"
   },
   "files": [
-    "dist",
-    ".atlassian-devbox",
-    "post-install.js"
+    "dist"
   ],
   "repository": {
     "type": "git",
@@ -40,16 +36,17 @@
   },
   "homepage": "https://github.com/viqueen/atlassian-devbox#readme",
   "devDependencies": {
-    "@types/node": "^18.7.22",
+    "@types/node": "^18.11.9",
     "husky": "^8.0.1",
-    "npm-check-updates": "^16.3.2",
+    "npm-check-updates": "^16.3.16",
     "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
-    "typescript": "^4.8.3"
+    "typescript": "^4.8.4"
   },
   "dependencies": {
-    "chalk": "^5.0.1",
-    "commander": "^9.4.0",
+    "chalk": "^4.1.2",
+    "commander": "^9.4.1",
+    "fs-directory": "^1.0.0",
     "fs-extra": "^10.1.0"
   }
 }

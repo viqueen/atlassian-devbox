@@ -1,23 +1,22 @@
 #! /usr/bin/env node
 
-import AtlassianProduct from '../product/atlassian-product';
+import { executable } from '../lib/executable';
 
-const Jira = new AtlassianProduct({
+const program = executable({
     name: 'jira',
     groupId: 'com.atlassian.jira',
     webappName: 'atlassian-jira-webapp',
-    plugins: [],
-    httpPort: 2990,
     contextPath: '/jira',
-    debugPort: 5005,
+    httpPort: 2990,
     ajpPort: 9009,
+    debugPort: 5005,
+    plugins: [],
     jvmArgs: [
         '-Datlassian.mail.senddisabled=false',
+        '-Datlassian.mail.popdisabled=false',
         '-Djira.websudo.is.disabled=true'
     ]
 });
-
-const program = Jira.get();
 
 program.version(require('../../package.json').version);
 program.parse(process.argv);
