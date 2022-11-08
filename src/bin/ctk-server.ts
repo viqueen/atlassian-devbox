@@ -1,20 +1,18 @@
 #! /usr/bin/env node
 
-import AtlassianProduct from '../product/atlassian-product';
+import { executable } from '../lib/executable';
 
-const CtkServer = new AtlassianProduct({
+const program = executable({
     name: 'ctk-server',
     groupId: 'com.atlassian.federation',
     webappName: 'federated-api-ctk-server-distribution',
-    plugins: [],
-    httpPort: 8990,
     contextPath: '/ctk',
-    debugPort: 5005,
+    httpPort: 8990,
     ajpPort: 18009,
+    debugPort: 5005,
+    plugins: [],
     jvmArgs: []
 });
-
-const program = CtkServer.get();
 
 program.version(require('../../package.json').version);
 program.parse(process.argv);

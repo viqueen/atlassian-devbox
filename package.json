@@ -4,13 +4,13 @@
   "description": "atlassian devbox",
   "preferGlobal": true,
   "bin": {
-    "bamboo": "dist/cli/bamboo.js",
-    "bitbucket": "dist/cli/bitbucket.js",
-    "confluence": "dist/cli/confluence.js",
-    "crowd": "dist/cli/crowd.js",
-    "ctk-server": "dist/cli/ctk-server.js",
-    "fecru": "dist/cli/fecru.js",
-    "jira": "dist/cli/jira.js"
+    "bamboo": "dist/bin/bamboo.js",
+    "bitbucket": "dist/bin/bitbucket.js",
+    "confluence": "dist/bin/confluence.js",
+    "crowd": "dist/bin/crowd.js",
+    "ctk-server": "dist/bin/ctk-server.js",
+    "fecru": "dist/bin/fecru.js",
+    "jira": "dist/bin/jira.js"
   },
   "scripts": {
     "build": "tsc",

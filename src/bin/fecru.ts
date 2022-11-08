@@ -1,20 +1,18 @@
 #! /usr/bin/env node
 
-import AtlassianProduct from '../product/atlassian-product';
+import { executable } from '../lib/executable';
 
-const FeCru = new AtlassianProduct({
+const program = executable({
     name: 'fecru',
     groupId: 'com.atlassian.crucible',
     webappName: 'atlassian-crucible',
-    plugins: [],
-    httpPort: 3990,
     contextPath: '/fecru',
-    debugPort: 5005,
+    httpPort: 3990,
     ajpPort: 3009,
+    debugPort: 5005,
+    plugins: [],
     jvmArgs: []
 });
-
-const program = FeCru.get();
 
 program.version(require('../../package.json').version);
 program.parse(process.argv);
