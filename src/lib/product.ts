@@ -32,6 +32,10 @@ export const product = ({
     groupId,
     webappName
 }: ProductDefinition): Product => {
+    const _product = (productVersion: string) => {
+        return `amps-standalone-${name}-${productVersion}`;
+    };
+
     const _runStandalone = (
         {
             ampsVersion,
@@ -93,7 +97,7 @@ export const product = ({
         const directory = home();
         const file = path.resolve(
             directory,
-            `amps-standalone-${productVersion}`,
+            _product(productVersion),
             'target',
             `${name}-LATEST.log`
         );
@@ -111,9 +115,7 @@ export const product = ({
         const directory = home();
         return fs
             .readdirSync(directory)
-            .filter((d) =>
-                d.startsWith(`amps-standalone-${name}-${productVersion}`)
-            )
+            .filter((d) => d.startsWith(_product(productVersion)))
             .map((d) => {
                 if (absolutePath) return path.resolve(directory, d);
                 return d;
