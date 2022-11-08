@@ -13,6 +13,13 @@
 
 ## install it
 
+### from homebrew
+
+```bash
+brew tap viqueen/atlassian-devbox
+brew install atlassian-devbox
+```
+
 ### from npm
 
 * first time
