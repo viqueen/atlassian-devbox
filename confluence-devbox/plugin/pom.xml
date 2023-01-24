@@ -40,7 +40,7 @@
         <dependency>
             <groupId>com.atlassian.querylang</groupId>
             <artifactId>confluence-query-lang-spi</artifactId>
-            <version>2.0.0</version>
+            <version>2.0.4</version>
             <scope>provided</scope>
         </dependency>
 
