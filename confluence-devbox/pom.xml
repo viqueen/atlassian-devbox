@@ -21,7 +21,7 @@
     </modules>
 
     <properties>
-        <amps.version>8.2.0</amps.version>
+        <amps.version>8.9.1</amps.version>
 
         <atlassian.plugin.key>${project.groupId}.${project.artifactId}</atlassian.plugin.key>
         <atlassian.spring.scanner.version>2.2.0</atlassian.spring.scanner.version>
