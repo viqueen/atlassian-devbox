@@ -62,7 +62,7 @@
             <dependency>
                 <groupId>com.atlassian.browsers</groupId>
                 <artifactId>atlassian-browsers-auto</artifactId>
-                <version>3.0.2</version>
+                <version>3.1.4</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
