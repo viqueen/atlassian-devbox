@@ -168,7 +168,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.0.0-M5</version>
+                <version>3.0.0-M8</version>
                 <configuration>
                     <reportsDirectory>${project.basedir}/../target/failsafe-reports/integration-tests</reportsDirectory>
                 </configuration>
