@@ -14,7 +14,7 @@
     <name>Confluence Devbox Plugin Integration Tests</name>
 
     <properties>
-        <atlassian.selenium.and.webdriver.version>3.3.2</atlassian.selenium.and.webdriver.version>
+        <atlassian.selenium.and.webdriver.version>4.0.0-4ad52290</atlassian.selenium.and.webdriver.version>
         <xvfb.enable>true</xvfb.enable>
         <webdriver.browser>chrome</webdriver.browser>
     </properties>
