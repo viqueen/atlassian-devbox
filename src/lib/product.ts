@@ -1,17 +1,20 @@
-import * as path from 'path';
-import { home } from './home';
-import { ProductDefinition, RunnerOptions } from './types';
-import { ExecuteCommand } from './execute-command';
 import fs from 'fs';
 import * as os from 'os';
+import * as path from 'path';
+
 import { listFiles } from 'fs-directory';
+
+import { ExecuteCommand } from './execute-command';
+import { home } from './home';
+import { ProductDefinition, RunnerOptions } from './types';
+
 
 type ListInstancesArgs = {
     productVersion: string;
     absolutePath?: boolean;
 };
 
-export type Product = {
+type Product = {
     debugInstanceCmd: (runnerOptions: RunnerOptions) => ExecuteCommand;
     startInstanceCmd: (runnerOptions: RunnerOptions) => ExecuteCommand;
     viewInstanceLogCmd: (
@@ -21,7 +24,7 @@ export type Product = {
     listVersions: () => string[];
 };
 
-export const product = ({
+const product = ({
     name,
     httpPort,
     ajpPort,
@@ -153,3 +156,6 @@ export const product = ({
         listVersions
     };
 };
+
+export type { Product };
+export { product };

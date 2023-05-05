@@ -1,9 +1,15 @@
 ## environment
 
-I use **[nvm](https://github.com/nvm-sh/nvm)** to manage my node versions.
+- **[nvm](https://github.com/nvm-sh/nvm)** to manage node versions.
 
 ```bash
 brew install nvm
+```
+
+- **[yarn](https://yarnpkg.com/)** as node package manager
+
+```bash
+brew install yarn
 ```
 
 ## development setup
@@ -13,7 +19,7 @@ brew install nvm
 ```bash
 cd atlassian-devbox
 nvm install
-npm install
+yarn
 ```
 
 - set up git hooks
@@ -25,7 +31,7 @@ npx husky install
 - build it in watch mode
 
 ```bash
-npm run build -- --watch
+yarn build --watch
 ```
 
 - you can now use the cli

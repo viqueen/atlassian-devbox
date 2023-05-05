@@ -1,8 +1,8 @@
-import * as path from 'path';
-import * as os from 'os';
 import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
 
-export const home = () => {
+const home = () => {
     const directory = path.resolve(os.homedir(), '.atlassian-devbox');
     fs.mkdirSync(directory, { recursive: true });
     const settingsFile = path.resolve(directory, 'settings.xml');
@@ -53,3 +53,5 @@ export const home = () => {
     fs.writeFileSync(settingsFile, settingsContent, { encoding: 'utf-8' });
     return directory;
 };
+
+export { home };

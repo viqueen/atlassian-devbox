@@ -1,14 +1,18 @@
 import { spawn } from 'child_process';
+
 import chalk from 'chalk';
 
-export type ExecuteCommand = {
+type ExecuteCommand = {
     cmd: string;
     params: string[];
     cwd: string;
 };
 
-export const executeCommand = ({ cmd, params, cwd }: ExecuteCommand) => {
+const executeCommand = ({ cmd, params, cwd }: ExecuteCommand) => {
     console.info(chalk.green(`Executing `));
     console.info(chalk.green(`${cmd} ${params.join(' ')}`));
     spawn(cmd, params, { cwd, stdio: 'inherit' });
 };
+
+export type { ExecuteCommand };
+export { executeCommand };

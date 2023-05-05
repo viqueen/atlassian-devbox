@@ -1,4 +1,4 @@
-export type ProductDefinition = {
+type ProductDefinition = {
     name: string;
     groupId: string;
     webappName: string;
@@ -10,9 +10,11 @@ export type ProductDefinition = {
     jvmArgs: string[];
 };
 
-export type RunnerOptions = {
+type RunnerOptions = {
     ampsVersion: string;
     productVersion: string;
     withPlugins: string;
     withJvmArgs: string;
 };
+
+export type { ProductDefinition, RunnerOptions };

@@ -1,11 +1,13 @@
-import { Command } from 'commander';
-import { ProductDefinition } from './types';
-import { product } from './product';
-import { executeCommand } from './execute-command';
-import chalk from 'chalk';
 import * as fs from 'fs';
 
-export const executable = (definition: ProductDefinition) => {
+import chalk from 'chalk';
+import { Command } from 'commander';
+
+import { executeCommand } from './execute-command';
+import { product } from './product';
+import { ProductDefinition } from './types';
+
+const executable = (definition: ProductDefinition) => {
     const program = new Command();
 
     // options
@@ -99,3 +101,5 @@ export const executable = (definition: ProductDefinition) => {
 
     return program;
 };
+
+export { executable };
