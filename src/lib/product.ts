@@ -8,7 +8,6 @@ import { ExecuteCommand } from './execute-command';
 import { home } from './home';
 import { ProductDefinition, RunnerOptions } from './types';
 
-
 type ListInstancesArgs = {
     productVersion: string;
     absolutePath?: boolean;
