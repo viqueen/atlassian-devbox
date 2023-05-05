@@ -19,6 +19,9 @@ type Product = {
     viewInstanceLogCmd: (
         runnerOptions: Pick<RunnerOptions, 'productVersion'>
     ) => ExecuteCommand;
+    installVersionCmd: (
+        runnerOptions: Pick<RunnerOptions, 'productVersion'>
+    ) => ExecuteCommand;
     listInstances: (args: ListInstancesArgs) => string[];
     listVersions: () => string[];
 };
@@ -93,6 +96,19 @@ const product = ({
         return _runStandalone(runnerOptions, ['-Xmx2g', '-Xms1g']);
     };
 
+    const installVersionCmd = ({
+        productVersion
+    }: Pick<RunnerOptions, 'productVersion'>) => {
+        const directory = home();
+        const params: string[] = [
+            `-s`,
+            path.resolve(directory, 'settings.xml'),
+            'org.apache.maven.plugins:maven-dependency-plugin:3.5.0:get',
+            `-Dartifact=${groupId}:${webappName}:${productVersion}`
+        ];
+        return { cmd: 'mvn', params, cwd: directory };
+    };
+
     const viewInstanceLogCmd = ({
         productVersion
     }: Pick<RunnerOptions, 'productVersion'>) => {
@@ -152,7 +168,8 @@ const product = ({
         debugInstanceCmd,
         viewInstanceLogCmd,
         listInstances,
-        listVersions
+        listVersions,
+        installVersionCmd
     };
 };
 

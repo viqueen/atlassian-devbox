@@ -21,6 +21,16 @@ const executable = (definition: ProductDefinition) => {
 
     // commands
     program
+        .command('install <productVersion>')
+        .description(`installs ${definition.name} version`)
+        .action((productVersion) => {
+            const install = product(definition).installVersionCmd({
+                productVersion
+            });
+            executeCommand(install);
+        });
+
+    program
         .command('start <productVersion>')
         .description(`runs ${definition.name}`)
         .action((productVersion) => {

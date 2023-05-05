@@ -7,9 +7,9 @@
 
 ## requirements
 
-* [java - 8 / 11](https://adoptopenjdk.net/)
-* [maven - 3.6.x / 3.8.x](https://maven.apache.org/install.html)
-* [node](https://nodejs.org/en/)
+- [java - 8 / 11](https://adoptopenjdk.net/)
+- [maven - 3.6.x / 3.8.x](https://maven.apache.org/install.html)
+- [node](https://nodejs.org/en/)
 
 ## install it
 
@@ -22,17 +22,20 @@ brew install atlassian-devbox
 
 ### from npm
 
-* first time
+- first time
+
 ```bash
 npm install -g atlassian-devbox
 ```
 
-* does it need an update ?
+- does it need an update ?
+
 ```bash
 npm outdated -g --depth=0
 ```
 
-* update it
+- update it
+
 ```bash
 npm update -g atlassian-devbox
 ```
@@ -68,67 +71,62 @@ For example this is what the Confluence script documentation looks like
 Usage: confluence [options] [command]
 
 Options:
-  -hp, --http-port <httpPort>        with http port (default: "1990")
-  -dp, --debug-port <debugPort>      with debug port (default: "5005")
-  -cp, --context-path <contextPath>  with context path (default: "/confluence")
-  -ap, --ajp-port <ajpPort>          with ajp port (default: "8009")
-  --plugins <plugins>                with plugins
-  --jvm-args <jvmArgs>               with jvmargs
-  --amps-version <ampsVersion>       with amps version (default: "8.2.0")
-  -V, --version                      output the version number
-  -h, --help                         display help for command
+  --amps-version <ampsVersion>   with amps version (default: "8.8.1")
+  --with-plugins <withPlugins>   with plugins (default: "")
+  --with-jvm-args <withJvmArgs>  with jvm args (default: "")
+  -V, --version                  output the version number
+  -h, --help                     display help for command
 
 Commands:
-  start <version>                    runs confluence
-  debug <version>                    runs confluence with debug port open
-  cmd <name> <version>               prints the resolved command
-  list                               lists installed confluence instances
-  remove <pattern>                   removes confluence instance with version matching given pattern
-  logs <version>                     tails confluence logs
-  versions                           lists available confluence versions in local maven repo
-  purge <type>                       purges available confluence versions in local maven repo
-  help [command]                     display help for command
+  install <productVersion>       installs confluence version
+  start <productVersion>         runs confluence
+  debug <productVersion>         runs confluence in debug mode
+  logs <productVersion>          tails confluence log file
+  remove <pattern>               removes confluence instance with version matching given pattern
+  list [options] [pattern]       lists installed confluence instances
+  versions                       lists available confluence versions in local maven repo
+  help [command]                 display help for command
 ```
 
-* start a confluence instance
+- start a confluence instance
+
 ```bash
 confluence start 7.4.9
 ```
 
-* tail the logs
+- tail the logs
+
 ```bash
 confluence logs 7.4.9
 ```
 
-* debug a confluence instance
+- debug a confluence instance
+
 ```bash
 confluence debug 7.4.9
 ```
 
-* print the underlying command
-```bash
-confluence cmd start 7.4.9
-confluence cmd debug 7.4.9
-```
+- list installed versions
 
-* list installed versions
 ```bash
 confluence list
 ```
 
-* remove some installed version
+- remove some installed version
+
 ```bash
 confluence remove 7.4.9
 confluence remove 7.4 # removes all 7.4.x instances
 ```
 
-* list available versions in local cache
+- list available versions in local cache
+
 ```bash
 confluence versions
 ```
 
-* purge versions in local cache
+- install a specific version without running it
+
 ```bash
-confluence purge internal # remove any snapshots / milestones / beta / release candidates
-confluence purge all      # purges the whole thing
+confluence install 7.18.0
 ```

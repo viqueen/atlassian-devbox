@@ -35,9 +35,9 @@ module.exports = {
                     order: 'asc',
                     caseInsensitive: true,
                 },
-                pathGroupsExcludedImportTypes: ['builtin']
+                pathGroupsExcludedImportTypes: ['builtin'],
             },
-        ]
+        ],
     },
     settings: {
         'import/resolver': {
