@@ -84,7 +84,7 @@ Commands:
   logs <productVersion>          tails confluence log file
   remove <pattern>               removes confluence instance with version matching given pattern
   list [options] [pattern]       lists installed confluence instances
-  versions                       lists available confluence versions in local maven repo
+  versions                       lists available confluence versions
   help [command]                 display help for command
 ```
 
@@ -123,6 +123,12 @@ confluence remove 7.4 # removes all 7.4.x instances
 
 ```bash
 confluence versions
+```
+
+- list available versions from remote
+
+```bash
+confluence versions -r
 ```
 
 - install a specific version without running it
