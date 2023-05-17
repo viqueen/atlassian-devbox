@@ -178,6 +178,7 @@ const product = ({
             'repository',
             productDirectory
         );
+        if (!fs.existsSync(productMavenDirectory)) return [];
         const fileNames = listFiles(productMavenDirectory, {
             directoryFilter: () => true,
             fileFilter: (entry) => {
