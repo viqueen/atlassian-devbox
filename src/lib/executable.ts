@@ -114,7 +114,10 @@ const executable = (definition: ProductDefinition) => {
                 console.info(chalk.cyan('---- available versions'));
                 const availableVersions = await product(
                     definition
-                ).listAvailableVersions({ limit, offset });
+                ).listAvailableVersions({
+                    limit: parseInt(limit),
+                    offset: parseInt(offset)
+                });
                 availableVersions.forEach((v) => console.info(v));
             }
         });
