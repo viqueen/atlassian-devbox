@@ -99,12 +99,12 @@ const executable = (definition: ProductDefinition) => {
         });
 
     program
-        .command('versions')
+        .command('versions [productVersion]')
         .option('-r, --remote', 'list remote versions', false)
         .option('-l, --limit <limit>', 'with limit on remote versions', '15')
         .option('-o, --offset <offset>', 'with offset on remote versions', '0')
         .description(`lists available ${definition.name} versions`)
-        .action(async (opts) => {
+        .action(async (productVersion, opts) => {
             console.info(chalk.cyan('---- installed versions'));
             product(definition)
                 .listInstalledVersions()
@@ -116,7 +116,8 @@ const executable = (definition: ProductDefinition) => {
                     definition
                 ).listAvailableVersions({
                     limit: parseInt(limit),
-                    offset: parseInt(offset)
+                    offset: parseInt(offset),
+                    productVersion
                 });
                 availableVersions.forEach((v) => console.info(v));
             }

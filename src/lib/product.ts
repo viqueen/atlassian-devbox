@@ -29,6 +29,7 @@ type Product = {
     listAvailableVersions: (props: {
         limit: number;
         offset: number;
+        productVersion?: string;
     }) => Promise<string[]>;
 };
 
@@ -110,17 +111,20 @@ const product = ({
             `-s`,
             path.resolve(directory, 'settings.xml'),
             'org.apache.maven.plugins:maven-dependency-plugin:3.5.0:get',
-            `-Dartifact=${groupId}:${webappName}:${productVersion}:war`
+            `-Dartifact=${groupId}:${webappName}:${productVersion}:war`,
+            `-Dtransitive=false`
         ];
         return { cmd: 'mvn', params, cwd: directory };
     };
 
     const listAvailableVersions = async ({
         limit,
-        offset
+        offset,
+        productVersion
     }: {
         limit: number;
         offset: number;
+        productVersion?: string;
     }): Promise<string[]> => {
         const packagesUrl = 'https://packages.atlassian.com/mvn/maven-external';
         const productPath = groupId.split('.').join(path.sep);
@@ -135,7 +139,10 @@ const product = ({
         const pattern = /^[0-9]+\.[0-9]+\.[0-9]+$/;
         const filtered = versions
             .reverse()
-            .filter((v: string) => v.match(pattern));
+            .filter((v: string) => v.match(pattern))
+            .filter(
+                (v: string) => !productVersion || v.startsWith(productVersion)
+            );
         return filtered.slice(offset, offset + limit);
     };
 
