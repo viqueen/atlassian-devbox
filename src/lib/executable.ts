@@ -100,13 +100,23 @@ const executable = (definition: ProductDefinition) => {
 
     program
         .command('versions')
-        .description(
-            `lists available ${definition.name} versions in local maven repo`
-        )
-        .action(() => {
+        .option('-r, --remote', 'list remote versions', false)
+        .option('-l, --limit <limit>', 'with limit on remote versions', '15')
+        .option('-o, --offset <offset>', 'with offset on remote versions', '0')
+        .description(`lists available ${definition.name} versions`)
+        .action(async (opts) => {
+            console.info(chalk.cyan('---- installed versions'));
             product(definition)
-                .listVersions()
+                .listInstalledVersions()
                 .forEach((v) => console.info(v));
+            if (opts.remote) {
+                const { limit, offset } = opts;
+                console.info(chalk.cyan('---- available versions'));
+                const availableVersions = await product(
+                    definition
+                ).listAvailableVersions({ limit, offset });
+                availableVersions.forEach((v) => console.info(v));
+            }
         });
 
     return program;

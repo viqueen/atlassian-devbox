@@ -2,7 +2,9 @@ import fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 
+import axios from 'axios';
 import { listFiles } from 'fs-directory';
+import { Parser } from 'xml2js';
 
 import { ExecuteCommand } from './execute-command';
 import { home } from './home';
@@ -23,7 +25,11 @@ type Product = {
         runnerOptions: Pick<RunnerOptions, 'productVersion'>
     ) => ExecuteCommand;
     listInstances: (args: ListInstancesArgs) => string[];
-    listVersions: () => string[];
+    listInstalledVersions: () => string[];
+    listAvailableVersions: (props: {
+        limit: number;
+        offset: number;
+    }) => Promise<string[]>;
 };
 
 const product = ({
@@ -109,6 +115,30 @@ const product = ({
         return { cmd: 'mvn', params, cwd: directory };
     };
 
+    const listAvailableVersions = async ({
+        limit,
+        offset
+    }: {
+        limit: number;
+        offset: number;
+    }): Promise<string[]> => {
+        const packagesUrl = 'https://packages.atlassian.com/mvn/maven-external';
+        const productPath = groupId.split('.').join(path.sep);
+        const metadataUrl = `${packagesUrl}/${productPath}/${webappName}/maven-metadata.xml`;
+        const { data } = await axios.get(metadataUrl, {
+            headers: { Accept: 'application/xml' }
+        });
+        const parser = new Parser();
+        const { metadata } = await parser.parseStringPromise(data);
+
+        const versions = metadata.versioning[0].versions[0].version;
+        const pattern = /^[0-9]+\.[0-9]+\.[0-9]+$/;
+        const filtered = versions
+            .reverse()
+            .filter((v: string) => v.match(pattern));
+        return filtered.slice(offset, offset + limit);
+    };
+
     const viewInstanceLogCmd = ({
         productVersion
     }: Pick<RunnerOptions, 'productVersion'>) => {
@@ -140,7 +170,7 @@ const product = ({
             });
     };
 
-    const listVersions = () => {
+    const listInstalledVersions = () => {
         const productDirectory = groupId.split('.').join(path.sep);
         const productMavenDirectory = path.resolve(
             os.homedir(),
@@ -168,8 +198,9 @@ const product = ({
         debugInstanceCmd,
         viewInstanceLogCmd,
         listInstances,
-        listVersions,
-        installVersionCmd
+        listInstalledVersions,
+        installVersionCmd,
+        listAvailableVersions
     };
 };
 
