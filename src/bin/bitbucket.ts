@@ -4,7 +4,7 @@ import { executable } from '../lib/executable';
 
 const program = executable({
     name: 'bitbucket',
-    groupId: 'com.atlassian.bitbucket',
+    groupId: 'com.atlassian.bitbucket.server',
     webappName: 'bitbucket-webapp',
     contextPath: '/bitbucket',
     httpPort: 7990,
