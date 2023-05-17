@@ -110,7 +110,7 @@ const product = ({
             `-s`,
             path.resolve(directory, 'settings.xml'),
             'org.apache.maven.plugins:maven-dependency-plugin:3.5.0:get',
-            `-Dartifact=${groupId}:${webappName}:${productVersion}`
+            `-Dartifact=${groupId}:${webappName}:${productVersion}:war`
         ];
         return { cmd: 'mvn', params, cwd: directory };
     };
