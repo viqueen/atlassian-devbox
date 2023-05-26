@@ -1,6 +1,6 @@
 {
-  "name": "atlassian-devbox",
-  "version": "3.0.1",
+  "name": "@labset/atlassian-devbox",
+  "version": "3.1.0",
   "description": "atlassian devbox",
   "preferGlobal": true,
   "bin": {
