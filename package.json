@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/viqueen/atlassian-devbox#readme",
   "devDependencies": {
-    "@types/node": "^20.11.10",
+    "@types/node": "^22.0.0",
     "@types/xml2js": "^0.4.11",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
